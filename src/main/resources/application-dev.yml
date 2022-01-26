@@ -1,0 +1,6 @@
+security:
+  jwt:
+    secret: AccountKey=iEg0P8rVh5FTRiyQ8Cj9TObElZtTfq6CPikJec7xNvXr8ryLvJrSHlyIKsuHm6mrf3ZyAWq5k1vjLfZmcyRfcQ==;
+
+otp:
+  ttl: 30000

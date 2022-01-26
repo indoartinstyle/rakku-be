@@ -1,0 +1,6 @@
+security:
+  jwt:
+    secret: ${JWT_SECRET}
+
+otp:
+  ttl: 60
