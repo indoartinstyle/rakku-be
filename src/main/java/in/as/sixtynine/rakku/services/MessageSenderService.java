@@ -57,6 +57,6 @@ public class MessageSenderService {
         otp.setTtl(otpTtl);
         otp.setMobileNo(String.valueOf(phoneNumber));
         otpRepository.save(otp);
-        sendSms("" + phoneNumber, s);
+        sendSms("+" + phoneNumber, s);
     }
 }
