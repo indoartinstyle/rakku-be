@@ -17,7 +17,6 @@ public class AppConf {
     private final Environment environment;
 
     public boolean isLocal() {
-        return false;
-       // return Arrays.stream(environment.getActiveProfiles()).anyMatch(prof -> prof.equalsIgnoreCase("dev"));
+        return Arrays.stream(environment.getActiveProfiles()).anyMatch(prof -> prof.equalsIgnoreCase("dev"));
     }
 }
