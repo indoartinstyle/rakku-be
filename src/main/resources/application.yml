@@ -6,6 +6,6 @@ spring:
 
 azure:
   cosmos:
-    uri: ${COSMOS_URI}
-    key: ${COSMOS_KEY}
-    database: ${COSMOS_DB}
+    uri: ${COSMOS_URI:http://localhost:443/}
+    key: ${COSMOS_KEY:root}
+    database: ${COSMOS_DB:localdb}
