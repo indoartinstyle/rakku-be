@@ -63,7 +63,7 @@ public class UserDataService {
             }
             int generatedTOTP = totp.generateOneTimePassword(key, Instant.now());
             log.info("TOTP generated for for phone number = {}", phoneNumber);
-            messageSenderService.sendSms(phoneNumber, generatedTOTP, "Your otp for HealthYantra Registration is " + generatedTOTP);
+            messageSenderService.sendSms(phoneNumber, generatedTOTP, "Your otp for RBOXX Registration is " + generatedTOTP);
         } catch (Exception e) {
             log.error("Error in saveSMSOtp() - Error = {}", e.getMessage());
         }
