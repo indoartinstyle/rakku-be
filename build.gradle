@@ -34,6 +34,7 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-ui:1.5.9'
 	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 	implementation 'com.eatthepath:java-otp:0.2.0'
+	implementation  'com.twilio.sdk:twilio:7.55.2'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'

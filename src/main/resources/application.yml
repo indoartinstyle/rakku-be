@@ -4,6 +4,10 @@ spring:
   profiles:
     active: ${APP_ACTIVE_PROFILE:dev}
 
+sms:
+  sid: ${SMS_ACCOUNT_SID}
+  token: ${SMS_AUTH_TOKEN}
+  from: ${SMS_FROM}
 azure:
   cosmos:
     uri: ${COSMOS_URI:http://localhost:443/}
