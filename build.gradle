@@ -19,7 +19,7 @@ repositories {
     mavenCentral()
 }
 node {
-    version = '14.15.0'
+    version = '16.13.2'
     download = true
     workDir = file("${project.projectDir}/src/main/ui/nodejs")
     npmWorkDir = file("${project.projectDir}/src/main/ui/npm")
