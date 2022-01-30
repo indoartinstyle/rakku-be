@@ -1,7 +1,8 @@
 plugins {
-	id 'org.springframework.boot' version '2.5.9'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '2.5.9'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'com.github.node-gradle.node' version '2.2.4'
 }
 
 group = 'in.as.sixtynine'
@@ -9,43 +10,78 @@ version = '0-M'
 sourceCompatibility = '11'
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
+}
+node {
+    version = '14.15.0'
+    download = true
+    workDir = file("${project.projectDir}/src/main/ui/nodejs")
+    npmWorkDir = file("${project.projectDir}/src/main/ui/npm")
+    nodeModulesDir = file("${project.projectDir}/src/main/ui")
+}
+
+task npmInstallDependencies(type: NpmTask) {
+    dependsOn 'npmSetup'
+    execOverrides {
+        it.ignoreExitValue = true
+        it.workingDir = 'sr/main/ui'
+    }
+    args = ['install']
+}
+
+
+task npmBuild(type: NpmTask) {
+    dependsOn 'npmInstallDependencies'
+    execOverrides {
+        it.workingDir = 'sr/main/ui'
+    }
+    args = ['run', 'build']
+}
+
+task copyFrontendToBuild(type: Copy) {
+    dependsOn 'npmBuild'
+    from "$projectDir/src/main/ui/build/"
+    into "$buildDir/resources/main/static"
+}
+
+processResources {
+    dependsOn 'copyFrontendToBuild'
 }
 
 ext {
-	set('azureVersion', "3.12.1")
+    set('azureVersion', "3.12.1")
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'com.azure.spring:azure-spring-boot-starter-cosmos'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	annotationProcessor 'org.projectlombok:lombok'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'com.azure.spring:azure-spring-boot-starter-cosmos'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.projectlombok:lombok'
 
-	implementation 'org.springdoc:springdoc-openapi-ui:1.5.9'
-	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
-	implementation 'com.eatthepath:java-otp:0.2.0'
-	implementation  'com.twilio.sdk:twilio:7.55.2'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.5.9'
+    implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+    implementation 'com.eatthepath:java-otp:0.2.0'
+    implementation 'com.twilio.sdk:twilio:7.55.2'
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
 }
 
 dependencyManagement {
-	imports {
-		mavenBom "com.azure.spring:azure-spring-boot-bom:${azureVersion}"
-	}
+    imports {
+        mavenBom "com.azure.spring:azure-spring-boot-bom:${azureVersion}"
+    }
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
