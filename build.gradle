@@ -30,7 +30,7 @@ task npmInstallDependencies(type: NpmTask) {
     dependsOn 'npmSetup'
     execOverrides {
         it.ignoreExitValue = true
-        it.workingDir = 'sr/main/ui'
+        it.workingDir = 'src/main/ui'
     }
     args = ['install']
 }
@@ -39,7 +39,7 @@ task npmInstallDependencies(type: NpmTask) {
 task npmBuild(type: NpmTask) {
     dependsOn 'npmInstallDependencies'
     execOverrides {
-        it.workingDir = 'sr/main/ui'
+        it.workingDir = 'src/main/ui'
     }
     args = ['run', 'build']
 }
