@@ -104,4 +104,8 @@ public class UserDataService {
         }
         return userRepository.findByPhoneNumber(Long.parseLong(mobilenumber)).get(0);
     }
+
+    public Iterable<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 }

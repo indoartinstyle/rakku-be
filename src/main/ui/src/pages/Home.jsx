@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Footer from '../components/Footer.jsx';
 import Navbar from '../components/Navbar.jsx';
 import Jumbotron from '../components/Jumbotron.jsx';
+import getFullUrl from '../helper/HelperUtil'
 
 class Home extends Component {
 
@@ -15,8 +16,13 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    fetch(
-      "https://jsonplaceholder.typicode.com/users")
+    fetch(getFullUrl("/open/users"), {
+      method: 'get',
+      headers: new Headers({
+        'Authorization': 'Basic ' + btoa('username:password'),
+        'Content-Type': 'application/json;charset=UTF-8'
+      })
+    })
       .then((res) => res.json())
       .then((json) => {
         this.setState({
@@ -38,8 +44,9 @@ class Home extends Component {
         <div className="container">
           <h2>Welcome</h2>
           <div className="App">
+            <h3>Found {items.count} users</h3>
             {
-              items.map((item) => (
+              items.users.map((item) => (
                 <ol key={item.id}>
                   User_Name: {item.username},
                   Full_Name: {item.name},

@@ -8,6 +8,9 @@ import in.as.sixtynine.rakku.userservice.utils.ERole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +39,13 @@ public class UserManagementService {
 
     public User getUserByMobileNumber(String mobilenumber) {
         return userDataService.getUserByMobileNumber(mobilenumber);
+
+    }
+
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        userDataService.getAllUsers().forEach(users::add);
+        return users;
 
     }
 }
