@@ -21,6 +21,9 @@ import javax.validation.constraints.NotBlank;
 import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -71,6 +74,15 @@ public class UserRegistrationController {
         }
         userManagementService.generateOtp(Long.parseLong(mobilenumber));
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/open/users")
+    public Object fetchUsers() {
+        Map<String, Object> response = new HashMap<>();
+        final List<User> allUsers = userManagementService.getAllUsers();
+        response.put("count", allUsers.size());
+        response.put("users", allUsers);
+        return response;
     }
 
 }
