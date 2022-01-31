@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Footer from '../components/Footer.jsx';
 import Navbar from '../components/Navbar.jsx';
-import Jumbotron from '../components/Jumbotron.jsx';
+import Jumbotron from '../components/Jumbotron.jsx'
 import getFullUrl from '../helper/HelperUtil'
 
 class Home extends Component {
@@ -45,8 +45,9 @@ class Home extends Component {
           <h2>Welcome</h2>
           <div className="App">
             <h3>Found {items.count} users</h3>
-            {
               items.users.map((item) => (
+            {
+              items.map((item) => (
                 <ol key={item.id}>
                   User_Name: {item.username},
                   Full_Name: {item.name},
