@@ -45,9 +45,8 @@ class Home extends Component {
           <h2>Welcome</h2>
           <div className="App">
             <h3>Found {items.count} users</h3>
-              items.users.map((item) => (
             {
-              items.map((item) => (
+              items.users.map((item) => (
                 <ol key={item.id}>
                   User_Name: {item.username},
                   Full_Name: {item.name},

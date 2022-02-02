@@ -10,17 +10,20 @@ import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
-import static in.as.sixtynine.rakku.constants.DBConstants.POSTS;
+import static in.as.sixtynine.rakku.constants.DBConstants.RBOX;
 
 
 @Data
 @NoArgsConstructor
-@Container(containerName = POSTS)
+@Container(containerName = RBOX)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Post {
     @Id
     private String id;
+
     @PartitionKey
+    private final String type = Post.class.getSimpleName();
+
     private String region;
     private String org;
     private String username;
