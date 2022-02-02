@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DBConstants {
 
-    public static final String ENTRY_DB_NAME = "daily_data";
-    public static final String POSTS = "posts";
+    public static final String RBOX = "rbox";
 
 }
