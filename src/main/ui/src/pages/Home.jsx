@@ -11,7 +11,10 @@ class Home extends Component {
     super(props);
     this.state = {
       items: [],
-      DataisLoaded: false
+      DataisLoaded: false,
+      user: {
+        name: 'Guest'
+      }
     };
   }
 
@@ -34,13 +37,14 @@ class Home extends Component {
 
 
   render() {
-    const {DataisLoaded, items} = this.state;
+    const {DataisLoaded, items, user} = this.state;
+    let title = 'Hi ' + user.name;
     if (!DataisLoaded) return <div>
       <h1> Pleses wait some time.... </h1></div>;
     return (
       <div>
         <Navbar/>
-        <Jumbotron title="Welcome" subtitle="Put something witty here!"/>
+        <Jumbotron title= {title} subtitle="Put something witty here!"/>
         <div className="container">
           <h2>Welcome</h2>
           <div className="App">

@@ -6,7 +6,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@Profile("dev")
+@Profile({"dev", "local"})
 public class DevCorsConfiguration implements WebMvcConfigurer {
 
     @Override

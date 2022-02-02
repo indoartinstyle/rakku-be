@@ -4,9 +4,9 @@ security:
 
 azure:
   cosmos:
-    uri: https://rakku.documents.azure.com:443/
-    key: iEg0P8rVh5FTRiyQ8Cj9TObElZtTfq6CPikJec7xNvXr8ryLvJrSHlyIKsuHm6mrf3ZyAWq5k1vjLfZmcyRfcQ==
-    database: rakku
+    uri: https://dev-rbox.documents.azure.com:443/
+    key: daJZkJHZSTbqsubF12oJ9Z6xK3PSya5R2bADXhkyKremSCjHmi2HNE46pn1Ie9y82SWHF4lV4HbBdLPJdXSW8g==
+    database: rbox
 otp:
   ttl: 30000
 sms:
