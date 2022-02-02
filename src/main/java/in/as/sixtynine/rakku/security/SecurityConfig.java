@@ -46,6 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.jpg",
                         "/**/*.html",
                         "/**/*.css",
+                        "/manifest.json",
                         "/**/*.js").permitAll()
                 .anyRequest().authenticated();
     }
