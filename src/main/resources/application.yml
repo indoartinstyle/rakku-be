@@ -2,7 +2,7 @@ spring:
   application:
     name: RBox
   profiles:
-    active: ${APP_ACTIVE_PROFILE:dev}
+    active: ${APP_ACTIVE_PROFILE:local}
 
 sms:
   sid: ${SMS_ACCOUNT_SID}

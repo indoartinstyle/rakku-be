@@ -1,15 +1,3 @@
 security:
   jwt:
     secret: AccountKey=iEg0P8rVh5FTRiyQ8Cj9TObElZtTfq6CPikJec7xNvXr8ryLvJrSHlyIKsuHm6mrf3ZyAWq5k1vjLfZmcyRfcQ==;
-
-azure:
-  cosmos:
-    uri: https://rakku.documents.azure.com:443/
-    key: iEg0P8rVh5FTRiyQ8Cj9TObElZtTfq6CPikJec7xNvXr8ryLvJrSHlyIKsuHm6mrf3ZyAWq5k1vjLfZmcyRfcQ==
-    database: rakku
-otp:
-  ttl: 30000
-sms:
-  sid: AC5e9fe319e2bbe55e1eae001a5b55cc6a
-  token: e88338c646f9ed16049d216c434e59d8
-  from: +17754028141
