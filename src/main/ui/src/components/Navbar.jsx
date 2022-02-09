@@ -10,7 +10,6 @@ class Navbar extends Component {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="container">
-          <Link className="navbar-brand" to="/">RBox</Link>
           <div className="collapse navbar-collapse" id="navbarCollapse">
             <ul className="navbar-nav ml-auto">
               <li className="nav-item active">
@@ -24,6 +23,12 @@ class Navbar extends Component {
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/register">Register</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/ordercreate">Create Order</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/print">Print Non Dispatch Order</Link>
               </li>
             </ul>
           </div>

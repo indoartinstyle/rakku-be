@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import Footer from '../components/Footer.jsx';
 import Navbar from '../components/Navbar.jsx';
 import Jumbotron from '../components/Jumbotron.jsx'
-import getFullUrl from '../helper/HelperUtil'
 
 class Home extends Component {
 
@@ -18,46 +17,16 @@ class Home extends Component {
     };
   }
 
-  componentDidMount() {
-    fetch(getFullUrl("/open/users"), {
-      method: 'get',
-      headers: new Headers({
-        'Authorization': 'Basic ' + btoa('username:password'),
-        'Content-Type': 'application/json;charset=UTF-8'
-      })
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        this.setState({
-          items: json,
-          DataisLoaded: true
-        });
-      })
-  }
-
 
   render() {
-    const {DataisLoaded, items, user} = this.state;
-    let title = 'Hi ' + user.name;
-    if (!DataisLoaded) return <div>
-      <h1> Pleses wait some time.... </h1></div>;
     return (
       <div>
         <Navbar/>
-        <Jumbotron title= {title} subtitle="Put something witty here!"/>
+        <Jumbotron title="User-1" subtitle="Put something witty here!"/>
         <div className="container">
           <h2>Welcome</h2>
           <div className="App">
-            <h3>Found {items.count} users</h3>
-            {
-              items.users.map((item) => (
-                <ol key={item.id}>
-                  User_Name: {item.username},
-                  Full_Name: {item.name},
-                  User_Email: {item.email}
-                </ol>
-              ))
-            }
+            <h3>Indo Art In Style Operation Portal</h3>
           </div>
         </div>
         <Footer/>
