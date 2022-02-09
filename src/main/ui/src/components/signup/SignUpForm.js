@@ -1,8 +1,6 @@
 import React from "react";
-import FlatButton from "material-ui/FlatButton";
 import RaisedButton from "material-ui/RaisedButton";
 import TextField from "material-ui/TextField";
-import PasswordStr from "./PasswordStr";
 import "./style.css";
 
 const SignUpForm = ({
@@ -43,7 +41,7 @@ const SignUpForm = ({
           primary={true}
           type="otp"
           label="Get OTP"
-          onClick={void(0)}
+          onClick={void (0)}
         />
         <p></p>
         <TextField
