@@ -3,11 +3,6 @@ const React = require("react");
 
 class Receipt extends Component {
 
-  // Constructor
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     if (!this.props.items) {
       return (<span></span>);
