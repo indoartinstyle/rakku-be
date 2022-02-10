@@ -21,6 +21,7 @@ public class ProductService {
 
     public Product createNewItem(Product product, String name) {
         product.setId(PREFIX + productRepository.getSeqNum());
+        product.setItemModelName(product.getItemModelName() + "-" + product.getItemSize() + "-" + product.getItemColor());
         product.setCreatedTime(System.currentTimeMillis());
         product.setCreatedBy(name);
         return productRepository.save(product);

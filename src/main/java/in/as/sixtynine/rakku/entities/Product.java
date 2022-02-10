@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
+import javax.validation.constraints.NotEmpty;
+
 import static in.as.sixtynine.rakku.constants.DBConstants.RBOX;
 
 
@@ -22,11 +24,15 @@ public class Product {
     @PartitionKey
     private final String type = Product.class.getSimpleName();
 
+    @NotEmpty
     private String itemModelName;
+    @NotEmpty
     private String itemColor;
+    @NotEmpty
     private String itemSize;
+    @NotEmpty
     private double cost;
-
+    @NotEmpty
     private int stock;
 
     private long createdTime;

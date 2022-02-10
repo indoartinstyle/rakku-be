@@ -35,6 +35,12 @@ public class UserRegistrationController {
     private final UserManagementService userManagementService;
     private final TokenGeneration tokenGeneration;
 
+    @GetMapping("/api/loggedinuser")
+    public User getLoggedInUser(Principal principal) {
+        log.info(principal);
+        return userManagementService.geLoggedInUser(principal);
+    }
+
     @PostMapping("/open/users")
     public ResponseEntity<User> addCustomer(@RequestBody @Valid User customer, @RequestHeader @NotBlank String totp) throws URISyntaxException, NoSuchAlgorithmException {
         customer.setUserType(UserType.BUYER.name());

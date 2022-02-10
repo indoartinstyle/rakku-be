@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
+import {black} from "material-ui/styles/colors";
 
 class Navbar extends Component {
   render() {
@@ -11,7 +12,7 @@ class Navbar extends Component {
         </button>
         <div className="container">
           <div className="collapse navbar-collapse" id="navbarCollapse">
-            <ul className="navbar-nav ml-auto">
+            <ul className="navbar-nav ml-auto" style={{color: black}}>
               <li className="nav-item active">
                 <Link className="nav-link" to="/">Home <span className="sr-only">(current)</span></Link>
               </li>

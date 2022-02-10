@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Footer from '../components/Footer.jsx';
 import Navbar from '../components/Navbar.jsx';
 import Jumbotron from '../components/Jumbotron.jsx'
+import getFullUrl from "../helper/HelperUtil";
 
 class Home extends Component {
 
@@ -9,20 +10,33 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [],
-      DataisLoaded: false,
-      user: {
-        name: 'Guest'
-      }
+      loggedInUser: null
     };
   }
 
+  componentDidMount() {
+    let token = localStorage.getItem('token');
+    let AUTH_TOKEN = 'Bearer ' + token;
+    fetch(getFullUrl("/api/loggedinuser"), {
+      method: 'get',
+      headers: new Headers({
+        'Authorization': AUTH_TOKEN,
+        'Content-Type': 'application/json;charset=UTF-8',
+        'Access-Control-Allow-Origin': '*'
+      })
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        this.setState({loggedInUser: json})
+      })
+  }
 
   render() {
+    let userName = this.state.loggedInUser && this.state.loggedInUser.firstName ? this.state.loggedInUser.firstName : 'Guest';
     return (
       <div>
         <Navbar/>
-        <Jumbotron title="User-1" subtitle="Put something witty here!"/>
+        <Jumbotron title={userName}/>
         <div className="container">
           <h2>Welcome</h2>
           <div className="App">

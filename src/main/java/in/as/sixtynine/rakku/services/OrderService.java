@@ -1,26 +1,20 @@
 package in.as.sixtynine.rakku.services;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.AtomicDouble;
 import in.as.sixtynine.rakku.dtos.DeliveryDetailsDto;
 import in.as.sixtynine.rakku.dtos.Item;
 import in.as.sixtynine.rakku.dtos.OrderDispatchDto;
 import in.as.sixtynine.rakku.dtos.OrderRequestDto;
 import in.as.sixtynine.rakku.entities.OrderEntity;
+import in.as.sixtynine.rakku.entities.Product;
 import in.as.sixtynine.rakku.mappers.OrderMapper;
 import in.as.sixtynine.rakku.repositories.OrderRepository;
+import in.as.sixtynine.rakku.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import javax.swing.text.html.parser.Entity;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -32,6 +26,7 @@ import java.util.stream.Collectors;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
     private final OrderMapper mapper;
 
     @Value("${delivery.from.address}")
@@ -46,7 +41,39 @@ public class OrderService {
         orderEntity.setId(UUID.randomUUID().toString());
         orderEntity.setOrderTakenBy(takenBy);
         fillTotalCost(orderEntity);
-        return orderRepository.save(orderEntity);
+        final Collection<Product> products = validateStock(orderEntity);
+        final OrderEntity save = orderRepository.save(orderEntity);
+        productRepository.saveAll(products);
+        return save;
+    }
+
+    private Collection<Product> validateStock(OrderEntity orderEntity) {
+        final Map<String, Item> items = new HashMap<>();
+        orderEntity.getItems().forEach(item -> {
+            items.put(item.getItemID(), item);
+        });
+        final Map<String, Product> products = new HashMap<>();
+        productRepository.findAllById(items.keySet()).forEach(product -> {
+            products.put(product.getId(), product);
+        });
+        if (products.size() != items.size()) {
+            throw new RuntimeException("All items are not present, available products are " + products.keySet());
+        }
+        List<String> lstInsufficientStock = new ArrayList<>();
+        products.forEach((pid, product) -> {
+            final Item item = items.get(pid);
+            final int itemQty = item.getItemQty();
+            final int stock = product.getStock();
+            if (stock >= itemQty) {
+                product.setStock(stock - itemQty);
+            } else {
+                lstInsufficientStock.add("Item " + item.getItemModelName() + " , required qty is " + itemQty + ", but stock is " + stock);
+            }
+        });
+        if (!lstInsufficientStock.isEmpty()) {
+            throw new RuntimeException(lstInsufficientStock.toString());
+        }
+        return products.values();
     }
 
     private void fillTotalCost(OrderEntity orderEntity) {
