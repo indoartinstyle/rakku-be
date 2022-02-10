@@ -39,7 +39,6 @@ export default class SignUp extends Component {
         'Access-Control-Allow-Origin': '*'
       },
     }).then((res) => {
-      let HomeURL = '/';
       if (res.status === 201) {
         localStorage.setItem('token', res.headers.token);
         this.setState({redirect: true});
