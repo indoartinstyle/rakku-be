@@ -39,9 +39,9 @@ public class Product {
     private long createdTime;
     private String createdBy;
 
-    @JsonProperty("_etag")
     @Version
-    private String etag;
+    @JsonProperty("_etag")
+    private String _etag;
     @JsonProperty("_self")
     private String self;
 }

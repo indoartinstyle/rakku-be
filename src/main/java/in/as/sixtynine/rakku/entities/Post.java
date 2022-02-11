@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 
 import java.util.List;
 
@@ -31,8 +32,9 @@ public class Post {
     private List<String> tags;
     private String content;
     private long createdTime;
+    @Version
     @JsonProperty("_etag")
-    private String etag;
+    private String _etag;
     @JsonProperty("_self")
     private String self;
 }

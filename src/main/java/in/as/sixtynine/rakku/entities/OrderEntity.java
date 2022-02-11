@@ -8,6 +8,7 @@ import in.as.sixtynine.rakku.dtos.Item;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 
 import java.util.List;
 
@@ -41,8 +42,10 @@ public class OrderEntity {
     private String orderDispatchBy;
 
     private long createdTime;
+
+    @Version
     @JsonProperty("_etag")
-    private String etag;
+    private String _etag;
     @JsonProperty("_self")
     private String self;
 }
