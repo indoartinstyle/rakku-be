@@ -20,6 +20,9 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     public Product createNewItem(Product product, String name) {
+        if (product.getCost() <= 0D) {
+            throw new RuntimeException("Cost cannot be < 0");
+        }
         product.setId(PREFIX + productRepository.getSeqNum());
         product.setItemModelName(product.getItemModelName() + "-" + product.getItemSize() + "-" + product.getItemColor());
         product.setCreatedTime(System.currentTimeMillis());

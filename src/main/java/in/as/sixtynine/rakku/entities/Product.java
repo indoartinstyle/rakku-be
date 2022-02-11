@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
 import static in.as.sixtynine.rakku.constants.DBConstants.RBOX;
@@ -31,9 +32,8 @@ public class Product {
     private String itemColor;
     @NotEmpty
     private String itemSize;
-    @NotEmpty
     private double cost;
-    @NotEmpty
+    @Min(1)
     private int stock;
 
     private long createdTime;
