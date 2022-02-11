@@ -95,8 +95,10 @@ class OrderCreate extends Component {
 
     return (
       <div>
-        <Navbar/>
-        <Jumbotron title="Take Order Portal"/>
+        <div>
+          <Navbar/>
+          <Jumbotron title="Take Order Portal"/>
+        </div>
         <div className="form-center row">
           <div className="col-sm-4" style={{display: 'inline-block', border: '1px solid black'}}>
             <table className="col-sm-4">
@@ -217,9 +219,11 @@ class OrderCreate extends Component {
               />
               <p></p>
               <center>
-                <button style={{margin : '2px'}} className="btn-warning" onClick={(event) => this.handleAddItem(event)}> Add More Item</button>
-                <button style={{margin : '2px'}} className="btn-info">Create Order</button>
-                <button style={{margin : '2px'}} className="btn-danger" onClick={this.handleClear}> Clear</button>
+                <button style={{margin: '2px'}} className="btn-warning"
+                        onClick={(event) => this.handleAddItem(event)}> Add More Item
+                </button>
+                <button style={{margin: '2px'}} className="btn-info">Create Order</button>
+                <button style={{margin: '2px'}} className="btn-danger" onClick={this.handleClear}> Clear</button>
               </center>
             </form>
           </div>

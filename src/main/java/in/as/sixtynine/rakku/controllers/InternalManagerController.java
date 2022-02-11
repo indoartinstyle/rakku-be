@@ -1,7 +1,7 @@
 package in.as.sixtynine.rakku.controllers;
 
 import in.as.sixtynine.rakku.dtos.DeliveryDetailsDto;
-import in.as.sixtynine.rakku.dtos.OrderDispatchDto;
+import in.as.sixtynine.rakku.dtos.OrderDispatchBulkDto;
 import in.as.sixtynine.rakku.dtos.OrderRequestDto;
 import in.as.sixtynine.rakku.entities.OrderEntity;
 import in.as.sixtynine.rakku.entities.Product;
@@ -38,10 +38,10 @@ public class InternalManagerController {
     }
 
     @CrossOrigin
-    @PostMapping("/order/{orderid}")
-    public ResponseEntity<OrderEntity> updateDispatch(@RequestBody @Valid OrderDispatchDto orderRequestDto, @PathVariable String orderid,
-                                                      Principal principal) throws URISyntaxException, NoSuchAlgorithmException {
-        final OrderEntity order = orderService.update(orderRequestDto, orderid, principal.getName());
+    @PostMapping("/order/update")
+    public ResponseEntity<List<OrderEntity>> updateDispatch(@RequestBody @Valid OrderDispatchBulkDto orderRequestDto,
+                                                            Principal principal) throws URISyntaxException, NoSuchAlgorithmException {
+        final List<OrderEntity> order = orderService.update(orderRequestDto, principal.getName());
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
 

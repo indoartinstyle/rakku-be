@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -39,6 +40,7 @@ public class Product {
     private String createdBy;
 
     @JsonProperty("_etag")
+    @Version
     private String etag;
     @JsonProperty("_self")
     private String self;

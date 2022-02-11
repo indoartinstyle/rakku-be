@@ -11,9 +11,9 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class OrderDispatchDto {
     @NotBlank
+    private String id;
+    @NotBlank
     private String itemCourierPartner;
     @NotBlank
     private String itemCourierTrackID;
-    @NotBlank
-    private String itemCourierStatus;
 }

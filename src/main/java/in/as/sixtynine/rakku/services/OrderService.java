@@ -1,10 +1,8 @@
 package in.as.sixtynine.rakku.services;
 
+import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.AtomicDouble;
-import in.as.sixtynine.rakku.dtos.DeliveryDetailsDto;
-import in.as.sixtynine.rakku.dtos.Item;
-import in.as.sixtynine.rakku.dtos.OrderDispatchDto;
-import in.as.sixtynine.rakku.dtos.OrderRequestDto;
+import in.as.sixtynine.rakku.dtos.*;
 import in.as.sixtynine.rakku.entities.OrderEntity;
 import in.as.sixtynine.rakku.entities.Product;
 import in.as.sixtynine.rakku.mappers.OrderMapper;
@@ -86,18 +84,23 @@ public class OrderService {
         orderEntity.setItemTotalCost(total.get());
     }
 
-    public OrderEntity update(OrderDispatchDto orderRequestDto, String orderid, String name) {
-        final Optional<OrderEntity> byId = orderRepository.findById(orderid);
-        final boolean present = byId.isPresent();
-        if (!present) {
-            throw new RuntimeException("No order found");
+    public List<OrderEntity> update(OrderDispatchBulkDto orderRequestDto, String name) {
+        final Iterable<OrderEntity> allById = orderRepository.findAllById(orderRequestDto.getOrders().stream().map(OrderDispatchDto::getId).collect(Collectors.toList()));
+        Map<String, OrderEntity> allOrders = new HashMap<>();
+        allById.forEach(order -> allOrders.put(order.getId(), order));
+        if (allOrders.size() != orderRequestDto.getOrders().size()) {
+            throw new RuntimeException("some orders not found");
         }
-        final OrderEntity orderEntity = byId.get();
-        orderEntity.setItemCourierPartner(orderRequestDto.getItemCourierPartner());
-        orderEntity.setItemCourierTrackID(orderRequestDto.getItemCourierTrackID());
-        orderEntity.setItemCourierStatus("DISPATCHED");
-        orderEntity.setOrderTakenBy(name);
-        return orderRepository.save(orderEntity);
+        List<OrderEntity> toBeUpdated = new ArrayList<>();
+        orderRequestDto.getOrders().forEach(updateablOrder -> {
+            final OrderEntity orderEntity = allOrders.get(updateablOrder.getId());
+            orderEntity.setItemCourierPartner(updateablOrder.getItemCourierPartner());
+            orderEntity.setItemCourierTrackID(updateablOrder.getItemCourierTrackID());
+            orderEntity.setItemCourierStatus("DISPATCHED");
+            orderEntity.setOrderDispatchBy(name);
+            toBeUpdated.add(orderEntity);
+        });
+        return Lists.newArrayList(orderRepository.saveAll(toBeUpdated));
     }
 
     public List<DeliveryDetailsDto> getAllNonDispatchedOrder() {

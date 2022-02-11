@@ -9,6 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import SignUp from "./components/signup/SignUp";
 import OrderCreate from "./pages/OrderCreate";
 import PrintAddress from "./pages/PrintDispatchable";
+import DispatchUpdate from "./pages/DispatchUpdate";
 
 class App extends Component {
   render() {
@@ -21,6 +22,7 @@ class App extends Component {
           <Route path="/ordercreate" component={OrderCreate}/>
           <Route path="/print" component={PrintAddress}/>
           <Route path="/register" component={SignUp}/>
+          <Route path= "/updateorder" component={DispatchUpdate}/>
         </div>
       </Router>
     );

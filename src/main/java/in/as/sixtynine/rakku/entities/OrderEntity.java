@@ -38,6 +38,7 @@ public class OrderEntity {
     private String itemCourierStatus;
 
     private String orderTakenBy;
+    private String orderDispatchBy;
 
     private long createdTime;
     @JsonProperty("_etag")
