@@ -52,7 +52,7 @@ public class UserDataService {
         throw new RuntimeException("Otp mismatch/expired ! Registration failed");
     }
 
-    public void saveSMSOtp(long phoneNumber) throws NoSuchAlgorithmException, InvalidKeyException {
+    public void saveSMSOtp(long phoneNumber) throws Exception {
         try {
             final TimeBasedOneTimePasswordGenerator totp = new TimeBasedOneTimePasswordGenerator();
             final Key key;
@@ -66,6 +66,7 @@ public class UserDataService {
             messageSenderService.sendSms(phoneNumber, generatedTOTP, "Your otp for RBOXX Registration is " + generatedTOTP);
         } catch (Exception e) {
             log.error("Error in saveSMSOtp() - Error = {}", e.getMessage());
+            throw e;
         }
     }
 
@@ -103,5 +104,9 @@ public class UserDataService {
             log.error("Not valid number (only number and >= 10 digit)");
         }
         return userRepository.findByPhoneNumber(Long.parseLong(mobilenumber)).get(0);
+    }
+
+    public Iterable<User> getAllUsers() {
+        return userRepository.findAll();
     }
 }

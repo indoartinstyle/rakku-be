@@ -35,7 +35,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers(config.getUrl()).permitAll()
-                .antMatchers("/**/open/**", "/logout/**", "/health/**", "/hystrix/**", "/actuator/health", "/swagger-ui/**","/swagger-ui.html", "/v3/api-docs/**", "/index.html", "/actuator/**").permitAll()
+                .antMatchers("/", "/**/open/**", "/logout/**", "/health/**", "/hystrix/**",
+                        "/actuator/health", "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/index.html",
+                        "/actuator/**", "/static/**", "/service-worker.js",
+                        "/webjars/**",
+                        "/favicon.ico",
+                        "/**/*.png",
+                        "/**/*.gif",
+                        "/**/*.svg",
+                        "/**/*.jpg",
+                        "/**/*.html",
+                        "/**/*.css",
+                        "/manifest.json",
+                        "/**/*.js").permitAll()
                 .anyRequest().authenticated();
     }
 

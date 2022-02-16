@@ -8,6 +8,10 @@ import in.as.sixtynine.rakku.userservice.utils.ERole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +23,7 @@ public class UserManagementService {
         user.setRoles(Sets.newHashSet(ERole.USER.getRoleName()));
         user.setCreatedTime(System.currentTimeMillis());
         user.setLastUpdatedTime(System.currentTimeMillis());
+        user.setId(user.getFirstName().toLowerCase() + "." + user.getLastName().toLowerCase() + "." + user.getPhoneNumber() + "." + System.nanoTime());
         return userDataService.saveUser(user, totp);
     }
 
@@ -37,5 +42,17 @@ public class UserManagementService {
     public User getUserByMobileNumber(String mobilenumber) {
         return userDataService.getUserByMobileNumber(mobilenumber);
 
+    }
+
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        userDataService.getAllUsers().forEach(users::add);
+        return users;
+
+    }
+
+    public User geLoggedInUser(Principal principal) {
+        final User userByID = userDataService.getUserByID(principal.getName());
+        return userByID;
     }
 }

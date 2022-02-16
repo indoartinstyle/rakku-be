@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+
 import static in.as.sixtynine.rakku.constants.DBConstants.RBOX;
 
 
@@ -16,15 +19,25 @@ import static in.as.sixtynine.rakku.constants.DBConstants.RBOX;
 @NoArgsConstructor
 @Container(containerName = RBOX)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OTP {
+public class Product {
     @Id
     private String id;
-    @PartitionKey
-    private final String type = OTP.class.getSimpleName();
 
-    private String mobileNo;
-    private String otp;
-    private long ttl;
+    @PartitionKey
+    private final String type = Product.class.getSimpleName();
+
+    @NotEmpty
+    private String itemModelName;
+    @NotEmpty
+    private String itemColor;
+    @NotEmpty
+    private String itemSize;
+    private double cost;
+    @Min(1)
+    private int stock;
+
+    private long createdTime;
+    private String createdBy;
 
     @Version
     @JsonProperty("_etag")

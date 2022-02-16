@@ -1,0 +1,9 @@
+
+.form-center {
+    background-color: #bfdec1;
+}
+
+label {
+    display: inline-block;
+    width: 150px;
+}

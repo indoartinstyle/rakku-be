@@ -2,7 +2,7 @@ spring:
   application:
     name: RBox
   profiles:
-    active: ${APP_ACTIVE_PROFILE:dev}
+    active: ${APP_ACTIVE_PROFILE:local}
 
 sms:
   sid: ${SMS_ACCOUNT_SID}
@@ -13,3 +13,8 @@ azure:
     uri: ${COSMOS_URI:http://localhost:443/}
     key: ${COSMOS_KEY:root}
     database: ${COSMOS_DB:localdb}
+
+delivery:
+  from:
+    address: "Sunanda Enclave, Opp Govt Girls HS School, Club Road, Silchar, Dist: Cachar, Assam, Pin: 788001"
+    phoneno: 6001955236

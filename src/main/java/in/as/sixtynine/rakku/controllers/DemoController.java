@@ -26,12 +26,6 @@ public class DemoController {
     private final RestTemplate restTemplate;
     private final PostService postService;
 
-    @GetMapping("/users")
-    public Object fetchUsers() {
-        log.info("fetching users....");
-        return restTemplate.getForObject("https://jsonplaceholder.typicode.com/users", Object.class);
-    }
-
     @GetMapping("/post")
     public Object getPosts(@RequestParam(value = "page", defaultValue = "0") Integer page,
                            @RequestParam(value = "size", defaultValue = "10") Integer size,
