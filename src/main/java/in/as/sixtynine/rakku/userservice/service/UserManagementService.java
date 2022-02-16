@@ -23,8 +23,12 @@ public class UserManagementService {
         user.setRoles(Sets.newHashSet(ERole.USER.getRoleName()));
         user.setCreatedTime(System.currentTimeMillis());
         user.setLastUpdatedTime(System.currentTimeMillis());
-        user.setId(user.getFirstName().toLowerCase() + "." + user.getLastName().toLowerCase() + "." + user.getPhoneNumber() + "." + System.nanoTime());
+        user.setId(generateUserID(user));
         return userDataService.saveUser(user, totp);
+    }
+
+    private String generateUserID(User user) {
+        return user.getFirstName().toLowerCase() + "." + user.getLastName().toLowerCase() + "." + user.getPhoneNumber();
     }
 
     public void generateOtp(long phoneNumber) throws Exception {

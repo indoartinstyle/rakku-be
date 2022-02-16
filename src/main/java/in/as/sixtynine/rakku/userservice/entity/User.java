@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 
@@ -17,11 +19,19 @@ import java.util.Set;
 public class User {
     @Id
     private String id;
+    @NotBlank
     private String lastName;
+
     private String avatarUrl;
+
+    @NotBlank
     private String firstName;
+
+    @NotBlank
     private String email;
+    @Min(1)
     private long phoneNumber;
+
     @PartitionKey
     private String userType;
     private String level;
