@@ -10,6 +10,7 @@ import SignUp from "./components/signup/SignUp";
 import OrderCreate from "./pages/OrderCreate";
 import PrintAddress from "./pages/PrintDispatchable";
 import DispatchUpdate from "./pages/DispatchUpdate";
+import AddProduct from "./pages/AddProduct";
 
 class App extends Component {
   render() {
@@ -23,6 +24,7 @@ class App extends Component {
           <Route path="/print" component={PrintAddress}/>
           <Route path="/register" component={SignUp}/>
           <Route path= "/updateorder" component={DispatchUpdate}/>
+          <Route path= "/addproduct" component={AddProduct}/>
         </div>
       </Router>
     );
