@@ -31,7 +31,7 @@ public class DemoController {
                            @RequestParam(value = "size", defaultValue = "10") Integer size,
                            Principal principal) {
         log.info("fetching post...., page={}, size={}", page, size);
-        return postService.getScrollingPost(page, size, principal.getName());
+        return null;//postService.getScrollingPost(page, size, principal.getName());
     }
 
     @GetMapping("/relevant/post")
@@ -39,11 +39,11 @@ public class DemoController {
                                    @RequestParam(value = "size", defaultValue = "10") Integer size,
                                    Principal principal) {
         log.info("fetching post...., page={}, size={}", page, size);
-        return postService.getRelevantPost(page, size, principal.getName());
+        return null;//postService.getRelevantPost(page, size, principal.getName());
     }
 
     @PostMapping("/post")
     public PostDto post(@RequestBody PostDto postDto, Principal principal) {
-        return postService.post(postDto, principal.getName());
+        return null; //postService.post(postDto, principal.getName());
     }
 }
