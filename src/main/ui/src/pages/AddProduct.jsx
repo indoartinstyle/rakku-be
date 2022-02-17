@@ -43,9 +43,11 @@ class AddProduct extends Component {
       },
     }).then(response => {
       this.setState({success: response})
+      window.alert('Product Added : ' + response.status);
       this.clearAll();
     }).catch(res => {
       this.setState({error: res.message})
+      window.alert('Failed  : ' + response.status);
     })
   };
 
