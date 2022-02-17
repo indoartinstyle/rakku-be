@@ -47,7 +47,7 @@ class AddProduct extends Component {
       this.clearAll();
     }).catch(res => {
       this.setState({error: res.message})
-      window.alert('Failed  : ' + response.status);
+      window.alert('Failed  : ' + res.status);
     })
   };
 

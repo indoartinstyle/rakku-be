@@ -47,6 +47,11 @@ public class UserDataService {
             throw new RuntimeException("Otp mismatch/expired ! Registration failed");
         }
         if (totp.equals(byId.get().getOtp())) {
+            final Optional<User> existing = userRepository.findById(user.getId());
+            if (existing.isPresent()) {
+                log.info("Found existing user... {}", user.getId());
+                return existing.get();
+            }
             return userRepository.save(user);
         }
         throw new RuntimeException("Otp mismatch/expired ! Registration failed");
