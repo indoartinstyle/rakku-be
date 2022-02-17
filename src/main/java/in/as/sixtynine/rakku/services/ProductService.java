@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Author Sanjay Das (s0d062y), Created on 23/01/22
@@ -28,6 +29,18 @@ public class ProductService {
         product.setCreatedTime(System.currentTimeMillis());
         product.setCreatedBy(name);
         return productRepository.save(product);
+    }
+
+    public Product updateStock(Product product, String name) {
+        if (product.getStock() <= 0) {
+            throw new RuntimeException("Cost cannot be < 0");
+        }
+        final Optional<Product> byId = productRepository.findById(product.getId());
+        final Product toBeUpdated = byId.get();
+        final int currentStock = toBeUpdated.getStock() < 0 ? 0 : toBeUpdated.getStock();
+        toBeUpdated.setStock(currentStock + product.getStock());
+        toBeUpdated.setUpdatedBy(name);
+        return productRepository.save(toBeUpdated);
     }
 
     public List<Product> getAllProducts() {

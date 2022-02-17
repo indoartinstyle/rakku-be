@@ -38,6 +38,7 @@ public class Product {
 
     private long createdTime;
     private String createdBy;
+    private String updatedBy;
 
     @Version
     @JsonProperty("_etag")

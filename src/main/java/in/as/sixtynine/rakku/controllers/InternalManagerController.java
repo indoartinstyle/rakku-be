@@ -64,6 +64,14 @@ public class InternalManagerController {
     }
 
     @CrossOrigin
+    @PutMapping("/product")
+    @Secured({"ROLE_ADMIN"})
+    public ResponseEntity<Product> updateStock(@RequestBody @Valid Product product, Principal principal) throws URISyntaxException, NoSuchAlgorithmException {
+        final Product newItem = productService.updateStock(product, principal.getName());
+        return new ResponseEntity<>(newItem, HttpStatus.CREATED);
+    }
+
+    @CrossOrigin
     @GetMapping("/product")
     public ResponseEntity<List<Product>> getAllProducts() throws URISyntaxException, NoSuchAlgorithmException {
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.CREATED);
