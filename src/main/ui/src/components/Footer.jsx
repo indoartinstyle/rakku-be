@@ -5,7 +5,7 @@ class Footer extends Component {
   render() {
     return (
       <footer className="footer">
-        <div className="container">
+        <div className="blockquote-footer">
           <span className="text-muted">My Website &#169; {new Date().getFullYear()}</span>
         </div>
       </footer>

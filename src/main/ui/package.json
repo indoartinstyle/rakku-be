@@ -1,6 +1,6 @@
 {
   "proxy": "http://localhost:8080",
-  "name": "RBox",
+  "name": "IAIS",
   "homepage": "https://sanjaydastezpur.github.io/",
   "version": "0.1.0",
   "private": true,

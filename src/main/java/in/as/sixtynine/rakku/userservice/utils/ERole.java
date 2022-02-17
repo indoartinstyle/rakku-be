@@ -8,6 +8,12 @@ public enum ERole {
             return "ROLE_" + this.name();
         }
     },
+    EMPLOYEE {
+        @Override
+        public String getRoleName() {
+            return "ROLE_" + this.name();
+        }
+    },
     ADMIN {
         @Override
         public String getRoleName() {

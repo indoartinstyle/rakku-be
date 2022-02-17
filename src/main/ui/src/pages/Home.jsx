@@ -3,6 +3,7 @@ import Footer from '../components/Footer.jsx';
 import Navbar from '../components/Navbar.jsx';
 import Jumbotron from '../components/Jumbotron.jsx'
 import getFullUrl from "../helper/HelperUtil";
+import './Home.css';
 
 class Home extends Component {
 
@@ -41,9 +42,17 @@ class Home extends Component {
           <h2>Welcome</h2>
           <div className="App">
             <h3>Indo Art In Style Operation Portal</h3>
+            <center>
+              <iframe
+                src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fpermalink.php%3Fstory_fbid%3D115843897685337%26id%3D106889208580806&show_text=true&width=500"
+                width="100%" height="600px"
+                allowFullScreen="true"
+                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
+              </iframe>
+              <script async src="//www.instagram.com/embed.js"></script>
+            </center>
           </div>
         </div>
-        <Footer/>
       </div>
     );
   }
