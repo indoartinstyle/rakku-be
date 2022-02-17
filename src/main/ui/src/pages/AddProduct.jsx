@@ -42,21 +42,27 @@ class AddProduct extends Component {
         'Authorization': AUTH_TOKEN,
       },
     }).then(response => {
-      this.setState({success: response})
-      window.alert('Product Added : ' + response.status);
-      this.clearAll();
+      this.setState({success: response});
+      this.setState({isAdded: true});
     }).catch(res => {
-      this.setState({error: res.message})
+      this.setState({error: res.message});
       window.alert('Failed  : ' + res.status);
     })
   };
 
-  clearAll = () => {
+  clearAll = (event) => {
+    event.preventDefault();
     this.setState({itemModelName: ''})
     this.setState({itemColor: ''})
     this.setState({itemSize: ''})
     this.setState({cost: ''})
     this.setState({stock: ''})
+    this.setState({isAdded: false});
+  }
+
+  newEntry = (event) => {
+    event.preventDefault();
+    this.setState({isAdded: false})
   }
 
   render() {
@@ -126,7 +132,9 @@ class AddProduct extends Component {
                 placeholder="Enter StockD"
               />
               <center>
-                <button style={{margin: '2px'}} className="btn-info">Add</button>
+                <button disabled={this.state.isAdded} style={{margin: '2px'}} className="btn-info">{this.state.isAdded ? 'Added' : 'Add Now'}</button>
+                <button style={{margin: '2px'}} className="btn-info" onClick={this.newEntry}>New Entry</button>
+                <button style={{margin: '2px'}} className="btn-info" onClick={this.clearAll}>Clear All</button>
               </center>
             </form>
           </div>
