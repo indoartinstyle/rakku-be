@@ -12,4 +12,7 @@ import java.util.List;
 public interface OrderRepository extends CosmosRepository<OrderEntity, String> {
     @Query("SELECT * FROM c where c.type='OrderEntity' AND IS_NULL(c.itemCourierTrackID)")
     List<OrderEntity> getAllNonDispatchedOrder();
+
+    @Query("SELECT * FROM c where c.type='OrderEntity' AND c.createdTime >= @time ORDER BY c.createdTime DESC")
+    List<OrderEntity> getSaleInfo(long time);
 }

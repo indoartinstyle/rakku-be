@@ -1,5 +1,6 @@
 package in.as.sixtynine.rakku.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.AtomicDouble;
 import in.as.sixtynine.rakku.dtos.*;
@@ -12,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -26,6 +29,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final OrderMapper mapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Value("${delivery.from.address}")
     private String fromAddr;
@@ -124,5 +128,43 @@ public class OrderService {
             deliveryDetailsDto.setItemTotalCost(order.getItemTotalCost());
             return deliveryDetailsDto;
         }).collect(Collectors.toList());
+    }
+
+
+    public SalesDto getAllSales(String year, String month, String day, boolean isItemReq) throws ParseException {
+        String myDate = year + "/" + month + "/" + day + " 00:00:00";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = sdf.parse(myDate);
+        long millis = date.getTime();
+        final List<OrderEntity> saleInfo = orderRepository.getSaleInfo(millis);
+        final SalesDto res = new SalesDto();
+        saleInfo.forEach(order -> {
+            res.setTotalRevenue(res.getTotalRevenue() + order.getItemTotalCost());
+            order.getItems().forEach(item -> {
+                res.setNoOfItem(res.getNoOfItem() + 1);
+            });
+        });
+        if (isItemReq) {
+            List<Map> allItems = new ArrayList<>();
+            res.setAllItems(allItems);
+
+            Calendar calendar = Calendar.getInstance();
+
+            saleInfo.forEach(orderEntity -> {
+                final long createdTime = orderEntity.getCreatedTime();
+                final String orderID = orderEntity.getId();
+                orderEntity.getItems().forEach(item -> {
+                    final Map map = objectMapper.convertValue(item, Map.class);
+                    map.put("orderID", orderID);
+                    calendar.setTimeInMillis(createdTime);
+                    int mYear = calendar.get(Calendar.YEAR);
+                    int mMonth = calendar.get(Calendar.MONTH);
+                    int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+                    map.put("date", mDay + "-" + mMonth + "-" + mYear);
+                    allItems.add(map);
+                });
+            });
+        }
+        return res;
     }
 }

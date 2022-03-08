@@ -12,6 +12,7 @@ import PrintAddress from "./pages/PrintDispatchable";
 import DispatchUpdate from "./pages/DispatchUpdate";
 import AddProduct from "./pages/AddProduct";
 import Navbar from "./components/Navbar";
+import SalesReport from "./pages/SalesReport";
 
 class App extends Component {
   render() {
@@ -28,6 +29,7 @@ class App extends Component {
             <Route path="/register" component={SignUp}/>
             <Route path= "/updateorder" component={DispatchUpdate}/>
             <Route path= "/addproduct" component={AddProduct}/>
+            <Route path= "/sales" component={SalesReport}/>
           </Switch>
         </div>
       </Router>

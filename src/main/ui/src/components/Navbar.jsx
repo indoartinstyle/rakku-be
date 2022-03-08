@@ -68,6 +68,9 @@ class Navbar extends Component {
               <li className="nav-item">
                 <Link className="nav-link" to="/addproduct">Stock Entry</Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/sales">Sale Report</Link>
+              </li>
             </ul>
           </div>
         </div>

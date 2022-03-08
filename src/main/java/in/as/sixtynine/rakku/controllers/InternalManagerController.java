@@ -3,6 +3,7 @@ package in.as.sixtynine.rakku.controllers;
 import in.as.sixtynine.rakku.dtos.DeliveryDetailsDto;
 import in.as.sixtynine.rakku.dtos.OrderDispatchBulkDto;
 import in.as.sixtynine.rakku.dtos.OrderRequestDto;
+import in.as.sixtynine.rakku.dtos.SalesDto;
 import in.as.sixtynine.rakku.entities.OrderEntity;
 import in.as.sixtynine.rakku.entities.Product;
 import in.as.sixtynine.rakku.services.OrderService;
@@ -17,6 +18,7 @@ import javax.validation.Valid;
 import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -75,6 +77,13 @@ public class InternalManagerController {
     @GetMapping("/product")
     public ResponseEntity<List<Product>> getAllProducts() throws URISyntaxException, NoSuchAlgorithmException {
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @GetMapping("/sales")
+    public ResponseEntity<SalesDto> getAllSales(@RequestParam String year, @RequestParam String month, @RequestParam String day, @RequestParam Boolean isItemReq) throws URISyntaxException, NoSuchAlgorithmException, ParseException {
+        SalesDto res = orderService.getAllSales(year, month, day, isItemReq);
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
 }
