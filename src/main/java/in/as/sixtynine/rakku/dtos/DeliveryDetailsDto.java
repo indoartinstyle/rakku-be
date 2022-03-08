@@ -16,6 +16,7 @@ public class DeliveryDetailsDto {
     private String customerAddress;
     private String customerName;
 
+    private String fromName;
     private long fromNumber;
     private String fromAddress;
 

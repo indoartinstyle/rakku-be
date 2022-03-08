@@ -30,6 +30,9 @@ public class OrderService {
     @Value("${delivery.from.address}")
     private String fromAddr;
 
+    @Value("${delivery.from.name}")
+    private String fromName;
+
     @Value("${delivery.from.phoneno}")
     private Long phoneno;
 
@@ -115,6 +118,7 @@ public class OrderService {
             deliveryDetailsDto.setCustomerName(customerName);
             deliveryDetailsDto.setCustomerNumber(customerNumber);
             deliveryDetailsDto.setFromAddress(fromAddr);
+            deliveryDetailsDto.setFromName(fromName);
             deliveryDetailsDto.setFromNumber(phoneno);
             deliveryDetailsDto.setItems(order.getItems());
             deliveryDetailsDto.setItemTotalCost(order.getItemTotalCost());

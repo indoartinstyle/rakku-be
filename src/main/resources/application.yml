@@ -15,6 +15,7 @@ azure:
     database: ${COSMOS_DB:localdb}
 
 delivery:
-  from: Indo Art In Style (IAIS)
+  from:
+    name: "Indo Art In Style (IAIS)"
     address: "Sunanda Enclave, Opp Govt Girls HS School, Club Road, Silchar, Dist: Cachar, Assam, Pin: 788001"
     phoneno: 6001955236
