@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import Navbar from '../components/Navbar.jsx';
 import Jumbotron from '../components/Jumbotron.jsx'
 import getFullUrl from "../helper/HelperUtil";
 import './Home.css';
@@ -35,7 +34,6 @@ class Home extends Component {
     let userName = this.state.loggedInUser && this.state.loggedInUser.firstName ? this.state.loggedInUser.firstName : 'Guest';
     return (
       <div>
-        <Navbar/>
         <Jumbotron title={userName}/>
         <div className="container">
           <h2>Welcome</h2>

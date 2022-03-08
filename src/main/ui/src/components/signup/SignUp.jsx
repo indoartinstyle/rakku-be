@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import Navbar from "../Navbar";
 import Jumbotron from "../Jumbotron";
 import getFullUrl from "../../helper/HelperUtil";
 import {Redirect} from "react-router-dom";
@@ -67,7 +66,6 @@ export default class SignUp extends Component {
     }
     return (
       <div>
-        <Navbar/>
         <Jumbotron title="Take Order Portal"/>
         <center>
           <div style={{display: 'inline-block', border: '1px solid black'}}>

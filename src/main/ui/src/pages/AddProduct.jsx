@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import axios from "axios";
 import './OrderCreate.css'
 import getFullUrl from "../helper/HelperUtil";
-import Navbar from "../components/Navbar";
 import Jumbotron from "../components/Jumbotron";
 import Marquee from "react-fast-marquee";
 
@@ -75,7 +74,6 @@ class AddProduct extends Component {
     return (
       <div>
         <div>
-          <Navbar/>
           <Jumbotron title="Take Order Portal"/>
         </div>
         {info}
@@ -132,7 +130,8 @@ class AddProduct extends Component {
                 placeholder="Enter StockD"
               />
               <center>
-                <button disabled={this.state.isAdded} style={{margin: '2px'}} className="btn-info">{this.state.isAdded ? 'Added' : 'Add Now'}</button>
+                <button disabled={this.state.isAdded} style={{margin: '2px'}}
+                        className="btn-info">{this.state.isAdded ? 'Added' : 'Add Now'}</button>
                 <button style={{margin: '2px'}} className="btn-info" onClick={this.newEntry}>New Entry</button>
                 <button style={{margin: '2px'}} className="btn-info" onClick={this.clearAll}>Clear All</button>
               </center>

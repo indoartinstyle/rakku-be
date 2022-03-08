@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import axios from "axios";
 import './OrderCreate.css'
 import getFullUrl from "../helper/HelperUtil";
-import Navbar from "../components/Navbar";
 import Jumbotron from "../components/Jumbotron";
 
 class OrderCreate extends Component {
@@ -42,7 +41,14 @@ class OrderCreate extends Component {
         'Access-Control-Allow-Origin': '*'
       })
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.status === 200) {
+          return res.json();
+        }
+        if (res.status === 401) {
+          window.alert('Please Register yourself');
+        }
+      })
       .then((json) => {
         this.setState({products: json})
       })
@@ -96,7 +102,6 @@ class OrderCreate extends Component {
     return (
       <div>
         <div>
-          <Navbar/>
           <Jumbotron title="Take Order Portal"/>
         </div>
         <div className="form-center row">

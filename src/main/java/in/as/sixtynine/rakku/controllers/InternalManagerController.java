@@ -74,7 +74,7 @@ public class InternalManagerController {
     @CrossOrigin
     @GetMapping("/product")
     public ResponseEntity<List<Product>> getAllProducts() throws URISyntaxException, NoSuchAlgorithmException {
-        return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.CREATED);
+        return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
 
 }

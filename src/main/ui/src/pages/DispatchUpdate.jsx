@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import getFullUrl from '../helper/HelperUtil'
 import './Home.css'
-import Navbar from "../components/Navbar";
 import Jumbotron from "../components/Jumbotron";
 import axios from "axios";
 
@@ -101,7 +100,6 @@ class DispatchUpdate extends Component {
     return (
       <div>
         <div className="row">
-          <Navbar/>
           <Jumbotron title="Take Order Portal"/>
         </div>
         <div className="overflow-scroll container" style={{' max-height': '100%'}}>

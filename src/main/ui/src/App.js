@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import './App.css';
 import Home from './pages/Home.jsx';
 import About from './pages/About.jsx';
@@ -11,20 +11,24 @@ import OrderCreate from "./pages/OrderCreate";
 import PrintAddress from "./pages/PrintDispatchable";
 import DispatchUpdate from "./pages/DispatchUpdate";
 import AddProduct from "./pages/AddProduct";
+import Navbar from "./components/Navbar";
 
 class App extends Component {
   render() {
     return (
       <Router>
         <div>
-          <Route exact path="/" component={Home}/>
-          <Route path="/about" component={About}/>
-          <Route path="/contact" component={Contact}/>
-          <Route path="/ordercreate" component={OrderCreate}/>
-          <Route path="/print" component={PrintAddress}/>
-          <Route path="/register" component={SignUp}/>
-          <Route path= "/updateorder" component={DispatchUpdate}/>
-          <Route path= "/addproduct" component={AddProduct}/>
+          <Navbar/>
+          <Switch>
+            <Route exact path="/" component={Home}/>
+            <Route path="/about" component={About}/>
+            <Route path="/contact" component={Contact}/>
+            <Route path="/ordercreate" component={OrderCreate}/>
+            <Route path="/print" component={PrintAddress}/>
+            <Route path="/register" component={SignUp}/>
+            <Route path= "/updateorder" component={DispatchUpdate}/>
+            <Route path= "/addproduct" component={AddProduct}/>
+          </Switch>
         </div>
       </Router>
     );
