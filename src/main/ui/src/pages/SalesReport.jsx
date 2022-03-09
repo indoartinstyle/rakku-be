@@ -69,7 +69,8 @@ class SalesReport extends Component {
         <center>
           <div className="card card-header">
             <div className="card-body">
-              <h4>Total Revenue : <font color="red">Rs. {this.state.sales.totalRevenue}/-</font></h4>
+              <h4>Total T/O : <font color="red">Rs. {this.state.sales.totalRevenue}/-</font></h4>
+              <h4>Total Cost : <font color="red">Rs. {this.state.sales.totalCost}/-</font></h4>
               <h4>Total Items : <font color="red">{this.state.sales.noOfItem}</font></h4>
             </div>
           </div>

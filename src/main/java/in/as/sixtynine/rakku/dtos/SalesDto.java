@@ -11,6 +11,7 @@ import java.util.Map;
 @Data
 public class SalesDto {
     private double totalRevenue;
+    private double totalCost;
     private int noOfItem;
     private List<Map> allItems;
 }

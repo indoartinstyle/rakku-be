@@ -149,11 +149,14 @@ public class OrderService {
             res.setAllItems(allItems);
 
             Calendar calendar = Calendar.getInstance();
-
+            Map<String, Integer> prdQtyMap = new HashMap<>();
             saleInfo.forEach(orderEntity -> {
                 final long createdTime = orderEntity.getCreatedTime();
                 final String orderID = orderEntity.getId();
                 orderEntity.getItems().forEach(item -> {
+                    Integer totQty = prdQtyMap.get(item.getItemID());
+                    totQty = totQty == null ? item.getItemQty() : (totQty + item.getItemQty());
+                    prdQtyMap.put(item.getItemID(), totQty);
                     final Map map = objectMapper.convertValue(item, Map.class);
                     map.put("orderID", orderID);
                     calendar.setTimeInMillis(createdTime);
@@ -163,6 +166,15 @@ public class OrderService {
                     map.put("date", mDay + "-" + mMonth + "-" + mYear);
                     allItems.add(map);
                 });
+            });
+
+
+            final Iterable<Product> allById = productRepository.findAllById(prdQtyMap.keySet());
+            allById.forEach(product -> {
+                final double cost = product.getCost();
+                final Integer qty = prdQtyMap.get(product.getId());
+                final double total = cost * qty;
+                res.setTotalCost(res.getTotalCost() + total);
             });
         }
         return res;
