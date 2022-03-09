@@ -50,7 +50,14 @@ class SalesReport extends Component {
             {field: 'itemID', resizable: true},
             {field: 'itemColor', resizable: true},
             {field: 'itemSize', resizable: true},
+            {field: 'courierPartner', resizable: true},
+            {field: 'trackingNo', resizable: true},
           ],
+          gridDefault: {
+            defaultColDef: {
+              filter: true,
+            },
+          },
           DataisLoaded: true
         });
       })
@@ -78,6 +85,7 @@ class SalesReport extends Component {
             <AgGridReact
               onGridReady={this.onGridReady.bind(this)}
               rowData={this.state.sales.allItems}
+              defaultColDef={this.state.gridDefault.defaultColDef}
               columnDefs={this.state.column}>
             </AgGridReact>
           </div>

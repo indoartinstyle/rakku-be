@@ -161,6 +161,8 @@ public class OrderService {
                     map.put("orderID", orderID);
                     calendar.setTimeInMillis(createdTime);
                     map.put("date", calendar.getTime());
+                    map.put("courierPartner", orderEntity.getItemCourierPartner());
+                    map.put("trackingNo", orderEntity.getItemCourierTrackID());
                     allItems.add(map);
                 });
             });
