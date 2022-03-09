@@ -160,10 +160,7 @@ public class OrderService {
                     final Map map = objectMapper.convertValue(item, Map.class);
                     map.put("orderID", orderID);
                     calendar.setTimeInMillis(createdTime);
-                    int mYear = calendar.get(Calendar.YEAR);
-                    int mMonth = calendar.get(Calendar.MONTH);
-                    int mDay = calendar.get(Calendar.DAY_OF_MONTH);
-                    map.put("date", mDay + "-" + mMonth + "-" + mYear);
+                    map.put("date", calendar.getTime());
                     allItems.add(map);
                 });
             });
