@@ -80,6 +80,12 @@ public class InternalManagerController {
     }
 
     @CrossOrigin
+    @GetMapping("/product/all")
+    public ResponseEntity<List<Product>> getAllProductsV2() {
+        return new ResponseEntity<>(productService.getAllProductsV2(), HttpStatus.OK);
+    }
+
+    @CrossOrigin
     @GetMapping("/sales")
     public ResponseEntity<SalesDto> getAllSales(@RequestParam String year, @RequestParam String month, @RequestParam String day, @RequestParam Boolean isItemReq) throws URISyntaxException, NoSuchAlgorithmException, ParseException {
         SalesDto res = orderService.getAllSales(year, month, day, isItemReq);

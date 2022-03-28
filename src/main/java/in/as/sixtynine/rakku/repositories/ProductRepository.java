@@ -6,7 +6,6 @@ import in.as.sixtynine.rakku.entities.Product;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 
 @Repository
@@ -24,7 +23,10 @@ public interface ProductRepository extends CosmosRepository<Product, String> {
         return Integer.parseInt(num) + 1;
     }
 
-    @Query("SELECT * from c WHERE c.stock > 0 ORDER BY c.createdTime DESC")
+    @Query("SELECT * from c WHERE c.stock > 0 ORDER BY c.itemModelName ASC")
     List<Product> getAllAvailableProducts();
+
+    @Query("SELECT * from c WHERE c.type='Product'")
+    List<Product> getAllProduct();
 
 }
