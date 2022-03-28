@@ -15,7 +15,7 @@ import java.util.Collection;
 @Log4j2
 @SpringBootApplication
 @RequiredArgsConstructor
-//@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class RakkuApplication {
 
     private final Environment env;
