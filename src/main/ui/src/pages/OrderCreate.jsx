@@ -238,6 +238,9 @@ class OrderCreate extends Component {
             {
               (this.state.error === null && this.state.success !== null) ? (
                 <div>
+                  {
+                    alert('Order Created, ID: ' + this.state.success.data.id)
+                  }
                   <h4 style={{color: 'Green'}}> Order Created</h4><p></p>
                   <h5>Order ID: {this.state.success.data.id}</h5>
                 </div>

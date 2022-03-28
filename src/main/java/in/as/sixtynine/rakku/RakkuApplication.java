@@ -15,7 +15,7 @@ import java.util.Collection;
 @Log4j2
 @SpringBootApplication
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class RakkuApplication {
 
     private final Environment env;
@@ -31,7 +31,7 @@ public class RakkuApplication {
                 log.error("You have misconfigured your application! It should not run with both the 'dev' and 'prod' profiles at the same time.");
             }
             if (activeProfiles.contains("prod") && activeProfiles.contains("test")) {
-                log.error("You have misconfigured your application! It should not run with both the 'prod' and 'fast' profiles at the same time.");
+                log.error("You have mis configured your application! It should not run with both the 'prod' and 'fast' profiles at the same time.");
             }
         }
     }

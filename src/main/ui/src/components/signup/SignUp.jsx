@@ -104,7 +104,7 @@ export default class SignUp extends Component {
                 type="text"
                 value={this.state.phoneNumber}
                 onChange={event => this.setState({phoneNumber: event.target.value})}
-                placeholder="Enter Social Media"
+                placeholder="Enter 10 digit Mobile number"
                 required
               />
               <p></p>
