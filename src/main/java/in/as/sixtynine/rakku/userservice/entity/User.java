@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -31,6 +32,8 @@ public class User {
     private String email;
     @Min(1)
     private long phoneNumber;
+
+    Map<String, Address> addresses;
 
     @PartitionKey
     private String userType;

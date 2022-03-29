@@ -10,9 +10,11 @@ import in.as.sixtynine.rakku.services.OrderService;
 import in.as.sixtynine.rakku.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.net.URISyntaxException;
@@ -20,6 +22,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Author Sanjay Das (s0d062y), Created on 08/02/22
@@ -77,6 +80,17 @@ public class InternalManagerController {
     @GetMapping("/product")
     public ResponseEntity<List<Product>> getAllProducts() throws URISyntaxException, NoSuchAlgorithmException {
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
+    }
+
+    @Secured({"ROLE_ADMIN"})
+    @PostMapping(value = "/product/image/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Product> uploadPaytable(@RequestPart Optional<MultipartFile> file, @RequestParam(value = "FY", required = true) String productID) throws Exception {
+        final MultipartFile multipartFile = file.get();
+        if (!multipartFile.getContentType().contains("image")) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        final Product product = productService.uploadProductImage(productID, multipartFile.getBytes());
+        return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 
     @CrossOrigin

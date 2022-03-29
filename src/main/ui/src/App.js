@@ -11,6 +11,9 @@ import DispatchUpdate from "./pages/DispatchUpdate";
 import AddProduct from "./pages/AddProduct";
 import Navbar from "./components/Navbar";
 import SalesReport from "./pages/SalesReport";
+import UploadImage from "./pages/UploadImage";
+import ViewProduct from "./pages/ViewProduct";
+import UpdateProduct from "./pages/UpdateProduct";
 
 class App extends Component {
   render() {
@@ -26,6 +29,9 @@ class App extends Component {
             <Route path="/updateorder" component={DispatchUpdate}/>
             <Route path="/addproduct" component={AddProduct}/>
             <Route path="/sales" component={SalesReport}/>
+            <Route path="/upload/:productID" component={UploadImage}/>
+            <Route path="/viewproducts" component={ViewProduct}/>
+            <Route path="/updateproduct" component={UpdateProduct}/>
           </Switch>
         </div>
       </Router>

@@ -5,6 +5,7 @@ import in.as.sixtynine.rakku.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +20,7 @@ public class ProductService {
     private static final String PREFIX = "PRODUCT-";
 
     private final ProductRepository productRepository;
+    private final StorageService storageService;
 
     public Product createNewItem(Product product, String name) {
         if (product.getCost() <= 0D) {
@@ -50,4 +52,12 @@ public class ProductService {
     public List<Product> getAllProductsV2() {
         return productRepository.getAllProduct();
     }
+
+    public Product uploadProductImage(String productID, byte[] file) throws IOException {
+        final Product product = productRepository.findById(productID).get();
+        storageService.productImageUpload(product, file);
+
+        return productRepository.save(product);
+    }
+
 }
