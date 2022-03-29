@@ -21,6 +21,10 @@ public class StorageService {
     public void productImageUpload(Product product, byte[] file) throws IOException {
         try {
             final String fileName = product.getId() + System.nanoTime() + ".jpg";
+            if (product.getImgUrl().size() > 10) {
+                log.error("max no of image reached");
+                throw new RuntimeException("max no of image reached");
+            }
             product.getImgUrl().add(config.upload(fileName, file));
         } catch (IOException e) {
             log.error("Error while uploading product image..\n Error ={}", e.getMessage());
