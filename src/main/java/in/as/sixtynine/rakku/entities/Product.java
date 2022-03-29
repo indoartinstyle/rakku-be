@@ -12,6 +12,9 @@ import org.springframework.data.annotation.Version;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static in.as.sixtynine.rakku.constants.DBConstants.RBOX;
 
 
@@ -26,6 +29,7 @@ public class Product {
     @PartitionKey
     private final String type = Product.class.getSimpleName();
 
+    private List<String> imgUrl =new ArrayList<>();
     @NotEmpty
     private String itemModelName;
     @NotEmpty

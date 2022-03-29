@@ -33,7 +33,7 @@ public class TokenGeneration {
     public String getToken(User user) {
         log.info("Generating token for user = {}", user);
         Instant now = Instant.now();
-        String token = Jwts.builder()
+        return Jwts.builder()
                 .setSubject(user.getId())
                 .claim(AUTHORITIES, user.getRoles())
                 .claim(USER, user)
@@ -42,8 +42,6 @@ public class TokenGeneration {
                 // TODO Need to implement RSA algorithm with key
                 .signWith(SignatureAlgorithm.HS256, config.getSecret().getBytes())
                 .compact();
-
-        return token;
     }
 
     public String getToken(User user, String otp) {

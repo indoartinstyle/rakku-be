@@ -65,6 +65,12 @@ class Navbar extends Component {
               <li className="nav-item">
                 <Link className="nav-link" to="/sales">Sale Report</Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/viewproducts">View Products</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/updateproduct">Update Product</Link>
+              </li>
             </ul>
           </div>
         </div>

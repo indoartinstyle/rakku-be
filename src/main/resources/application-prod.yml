@@ -4,3 +4,9 @@ security:
 
 otp:
   ttl: 60
+
+azure:
+  storage:
+    account-name: {BLOB_ACCOUNT_NAME}
+    account-key : {BLOB_ACCOUNT_KEY}
+    blob-endpoint: {BLOB_ENDPOINT}
