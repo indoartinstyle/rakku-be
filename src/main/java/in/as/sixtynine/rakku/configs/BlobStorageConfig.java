@@ -25,20 +25,25 @@ import java.io.InputStream;
 @RequiredArgsConstructor
 public class BlobStorageConfig {
 
+    protected static final String CONTAINER = "images";
     private final BlobServiceClientBuilder clientBuilder;
     @Getter
     private BlobContainerClient blobContainer;
 
     @PostConstruct
     public void init() throws IOException {
+        log.info("Initiating azure blob storage service...");
         BlobServiceClient blobServiceClient = clientBuilder.buildClient();
         try {
-            this.blobContainer = blobServiceClient.createBlobContainer("images");
+            this.blobContainer = blobServiceClient.createBlobContainer(CONTAINER);
+            log.info("Container '{}' is not present, created now", CONTAINER);
         } catch (BlobStorageException ex) {
             if (!ex.getErrorCode().equals(BlobErrorCode.CONTAINER_ALREADY_EXISTS)) {
+                log.error("Error while connecting azure blob storage account \n, Error => {}", ex.getMessage());
                 throw ex;
             }
-            this.blobContainer = blobServiceClient.getBlobContainerClient("images");
+            this.blobContainer = blobServiceClient.getBlobContainerClient(CONTAINER);
+            log.info("Container '{}' is present", CONTAINER);
         }
     }
 
