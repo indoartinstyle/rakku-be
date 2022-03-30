@@ -29,7 +29,7 @@ class App extends Component {
             <Route path="/updateorder" component={DispatchUpdate}/>
             <Route path="/addproduct" component={AddProduct}/>
             <Route path="/sales" component={SalesReport}/>
-            <Route path="/upload/:productID" component={UploadImage}/>
+            <Route path="/upload/:productID/:productName+" component={UploadImage}/>
             <Route path="/viewproducts" component={ViewProduct}/>
             <Route path="/updateproduct" component={UpdateProduct}/>
           </Switch>

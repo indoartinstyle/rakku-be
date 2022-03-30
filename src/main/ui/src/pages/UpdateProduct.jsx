@@ -54,7 +54,7 @@ class UpdateProduct extends Component {
                 <li>
               <span className="div2">
                 <a
-                  href={'/upload/' + product.id}> {'ID >> ' + product.id + ' || Name >> ' + product.itemModelName + ' || Stock >> ' + product.stock + ' || cost >> ' + product.stock}
+                  href={'/upload/' + product.id + '/' + product.itemModelName}> {'ID >> ' + product.id + ' || Name >> ' + product.itemModelName + ' || Stock >> ' + product.stock + ' || cost >> ' + product.stock}
                 </a>
               </span>
                 </li>

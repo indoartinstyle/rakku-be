@@ -9,6 +9,7 @@ class UploadImage extends Component {
       selectedFile: null
     }
   }
+
   onFileChange = event => {
     this.setState({selectedFile: event.target.files[0]});
   };
@@ -32,7 +33,11 @@ class UploadImage extends Component {
         'Content-Type': 'application/json;charset=UTF-8',
         'Authorization': AUTH_TOKEN,
       },
-    });
+    }).then(response => {
+      alert('Success, Response ' + response.status)
+    }).catch(response => {
+      alert('Failed, Response ' + response.status)
+    })
   };
 
   fileData = () => {
@@ -41,8 +46,8 @@ class UploadImage extends Component {
       return (
         <div>
           <h2>File Details:</h2>
-          <p>File Name: {this.state.selectedFile.name}</p>
-          <p>File Type: {this.state.selectedFile.type}</p>
+          <p>Image: {this.state.selectedFile.name}</p>
+          <p>Type: {this.state.selectedFile.type}</p>
           <p>
             Last Modified:{" "}
             {this.state.selectedFile.lastModifiedDate.toDateString()}
@@ -64,12 +69,13 @@ class UploadImage extends Component {
       <div>
         <div>
           <input type="file" onChange={this.onFileChange}/>
-          <button onClick={ ()=> {
+          <button onClick={() => {
             this.onFileUpload(this.props.match.params.productID)
           }}>
             Upload!
           </button>
         </div>
+        <h2>{this.props.match.params.productName}</h2>
         {this.fileData()}
       </div>
     );
