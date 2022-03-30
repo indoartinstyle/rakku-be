@@ -1,6 +1,7 @@
 package in.as.sixtynine.rakku.services;
 
 import com.azure.cosmos.implementation.guava25.collect.Sets;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
@@ -145,7 +146,16 @@ public class OrderService {
     public void test(List<OrderEntity> saleInfo) {
         log.info("Registering users....");
         AtomicInteger at = new AtomicInteger(1);
-
+        try {
+            repository.findAll().forEach(user -> {
+                user.setUserType(UserType.EMPLOYEE.name());
+                final User save = repository.save(user);
+                log.info("Employee = {}", save);
+                repository.deleteById(user.getId(), new PartitionKey(UserType.BUYER.name()));
+            });
+        } catch (Exception e) {
+            log.error("Employee User not updated");
+        }
         saleInfo.forEach(order -> {
             log.info("Counting {}...", at.getAndIncrement());
             try {
