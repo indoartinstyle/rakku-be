@@ -10,6 +10,7 @@ import in.as.sixtynine.rakku.userservice.service.UserManagementService;
 import in.as.sixtynine.rakku.userservice.utils.UserType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -110,6 +111,10 @@ public class InterceptingService {
     @Async("interceptThread")
     public void sendDispatchNotification(OrderEntity orderEntity) {
         try {
+            if (StringUtils.isBlank(orderEntity.getItemCourierPartner()) || StringUtils.isBlank(orderEntity.getItemCourierTrackID())) {
+                log.info("Not sending message, because track info is not valid...");
+                return;
+            }
             if (orderEntity.getItemCourierPartner().toLowerCase().replaceAll(" ", "").contains("byhan")) {
                 log.info("Not sending message, because dispatched not bu courier...");
                 return;
