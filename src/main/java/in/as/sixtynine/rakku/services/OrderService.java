@@ -160,7 +160,11 @@ public class OrderService {
                     for (int i = 1; i < s.length; i++) {
                         user.setLastName(user.getLastName() + " " + s[i]);
                     }
+                } else {
+                    user.setFirstName(s[0]);
+                    user.setLastName("");
                 }
+                user.setLastName(user.getLastName().replaceAll(" ", ""));
                 if ((customerNumber + "").length() == 12) {
                     user.setPhoneNumber(customerNumber);
                 }
