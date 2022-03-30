@@ -1,8 +1,5 @@
 package in.as.sixtynine.rakku.services;
 
-import com.azure.cosmos.implementation.guava25.collect.Sets;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.SqlQuerySpec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.AtomicDouble;
@@ -12,11 +9,7 @@ import in.as.sixtynine.rakku.entities.Product;
 import in.as.sixtynine.rakku.mappers.OrderMapper;
 import in.as.sixtynine.rakku.repositories.OrderRepository;
 import in.as.sixtynine.rakku.repositories.ProductRepository;
-import in.as.sixtynine.rakku.userservice.entity.Address;
-import in.as.sixtynine.rakku.userservice.entity.User;
 import in.as.sixtynine.rakku.userservice.repository.UserRepository;
-import in.as.sixtynine.rakku.userservice.utils.ERole;
-import in.as.sixtynine.rakku.userservice.utils.UserType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +18,6 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -142,75 +134,12 @@ public class OrderService {
         }).collect(Collectors.toList());
     }
 
-
-    public void test(List<OrderEntity> saleInfo) {
-        log.info("Registering users....");
-        AtomicInteger at = new AtomicInteger(1);
-        try {
-            repository.findAll().forEach(user -> {
-                user.setUserType(UserType.EMPLOYEE.name());
-                final User save = repository.save(user);
-                log.info("Employee = {}", save);
-                repository.deleteById(user.getId(), new PartitionKey(UserType.BUYER.name()));
-            });
-        } catch (Exception e) {
-            log.error("Employee User not updated");
-        }
-        saleInfo.forEach(order -> {
-            log.info("Counting {}...", at.getAndIncrement());
-            try {
-                final String customerName = order.getCustomerName();
-                final long customerNumber = order.getCustomerNumber();
-                final String customerAddress = order.getCustomerAddress();
-                final String[] s = customerName.split(" ");
-                User user = new User();
-                if (s.length > 1) {
-                    user.setFirstName(s[0]);
-                    user.setLastName("");
-                    for (int i = 1; i < s.length; i++) {
-                        user.setLastName(user.getLastName() + " " + s[i]);
-                    }
-                } else {
-                    user.setFirstName(s[0]);
-                    user.setLastName("");
-                }
-                user.setLastName(user.getLastName().replaceAll(" ", ""));
-                if ((customerNumber + "").length() == 12) {
-                    user.setPhoneNumber(customerNumber);
-                }
-                if ((customerNumber + "").length() == 10) {
-                    user.setPhoneNumber(Long.parseLong("91" + customerNumber));
-                }
-                Map<String, Address> addr = new HashMap<>();
-                Address address = new Address();
-                address.setLine1(customerAddress);
-                addr.put("PRIMARY", address);
-                user.setAddresses(addr);
-                user.setUserType(UserType.BUYER.name());
-                user.setRoles(Sets.newHashSet(ERole.USER.getRoleName()));
-                user.setCreatedTime(System.currentTimeMillis());
-                user.setLastUpdatedTime(System.currentTimeMillis());
-                user.setId(generateUserID(user));
-                final User save = repository.save(user);
-                log.info("New Users = {}", save);
-            } catch (Exception e) {
-                log.error("Order - > {}\nError=> {}", order, e.getMessage());
-            }
-        });
-        log.info("Registering users done....");
-    }
-
-    private String generateUserID(User user) {
-        return user.getFirstName().toLowerCase() + "." + user.getLastName().toLowerCase() + "." + user.getPhoneNumber();
-    }
-
     public SalesDto getAllSales(String year, String month, String day, boolean isItemReq) throws ParseException {
         String myDate = year + "/" + month + "/" + day + " 00:00:00";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = sdf.parse(myDate);
         long millis = date.getTime();
         final List<OrderEntity> saleInfo = orderRepository.getSaleInfo(millis);
-        test(saleInfo);
         final SalesDto res = new SalesDto();
         saleInfo.forEach(order -> {
             res.setTotalRevenue(res.getTotalRevenue() + order.getItemTotalCost());
