@@ -2,6 +2,7 @@ package in.as.sixtynine.rakku.services;
 
 import in.as.sixtynine.rakku.dtos.OrderRequestDto;
 import in.as.sixtynine.rakku.entities.OTP;
+import in.as.sixtynine.rakku.entities.OrderEntity;
 import in.as.sixtynine.rakku.repositories.OTPRepository;
 import in.as.sixtynine.rakku.userservice.entity.Address;
 import in.as.sixtynine.rakku.userservice.entity.User;
@@ -9,6 +10,7 @@ import in.as.sixtynine.rakku.userservice.service.UserManagementService;
 import in.as.sixtynine.rakku.userservice.utils.UserType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +26,15 @@ import java.util.UUID;
 @Service
 @Log4j2
 @RequiredArgsConstructor
+@Async("interceptThread")
 public class InterceptingService {
 
     private final UserManagementService userManagementService;
     private final OTPRepository otpRepository;
+    private final MessageSenderService messageSenderService;
+
+    @Value("${MSG_TEMPLATE}")
+    private String msgTemplate;
 
     @Async("interceptThread")
     public void createUserFromOrder(OrderRequestDto requestDto) {
@@ -98,5 +105,21 @@ public class InterceptingService {
         otp.setMobileNo("" + requestDto.getCustomerNumber());
         otp.setId(otp.getMobileNo());
         otpRepository.save(otp);
+    }
+
+    @Async("interceptThread")
+    public void sendDispatchNotification(OrderEntity orderEntity) {
+        try {
+            if (orderEntity.getItemCourierPartner().toLowerCase().replaceAll(" ", "").contains("byhan")) {
+                log.info("Not sending message, because dispatched not bu courier...");
+                return;
+            }
+            String newMsg = "" + msgTemplate;
+            messageSenderService.sendSms("" + orderEntity.getCustomerNumber(),
+                    newMsg.replace("<COURIER>", orderEntity.getItemCourierPartner()).replace("<TACK_ID>", orderEntity.getItemCourierTrackID()));
+
+        } catch (Exception e) {
+            log.error("Failed to send dispatch update notification for order = {}...", orderEntity);
+        }
     }
 }

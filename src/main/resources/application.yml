@@ -19,3 +19,5 @@ delivery:
     name: "Indo Art In Style (IAIS)"
     address: "Sunanda Enclave, Opp Govt Girls HS School, Club Road, Silchar, Dist: Cachar, Assam, Pin: 788001"
     phoneno: 6001955236
+
+MSG_TEMPLATE: "Your order is dispatched by courier <COURIER> , and your tracking id is <TACK_ID>"

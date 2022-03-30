@@ -111,6 +111,7 @@ public class OrderService {
             orderEntity.setItemCourierTrackID(updateablOrder.getItemCourierTrackID());
             orderEntity.setItemCourierStatus("DISPATCHED");
             orderEntity.setOrderDispatchBy(name);
+            interceptingService.sendDispatchNotification(orderEntity);
             toBeUpdated.add(orderEntity);
         });
         return Lists.newArrayList(orderRepository.saveAll(toBeUpdated));

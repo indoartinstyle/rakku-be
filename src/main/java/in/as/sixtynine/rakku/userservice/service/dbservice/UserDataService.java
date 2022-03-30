@@ -13,13 +13,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.crypto.KeyGenerator;
-import java.security.InvalidKeyException;
 import java.security.Key;
-import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -68,7 +67,7 @@ public class UserDataService {
             }
             int generatedTOTP = totp.generateOneTimePassword(key, Instant.now());
             log.info("TOTP generated for for phone number = {}", phoneNumber);
-            messageSenderService.sendSms(phoneNumber, generatedTOTP, "Your otp for RBOXX Registration is " + generatedTOTP);
+            messageSenderService.sendSms(phoneNumber, generatedTOTP, "Your otp for INDO ART IN STYLE (IAIS) Registration is " + generatedTOTP);
         } catch (Exception e) {
             log.error("Error in saveSMSOtp() - Error = {}", e.getMessage());
             throw e;
@@ -112,6 +111,6 @@ public class UserDataService {
     }
 
     public Iterable<User> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.findAll(Pageable.ofSize(10));
     }
 }
