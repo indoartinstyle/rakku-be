@@ -131,7 +131,7 @@ public class InterceptingService {
             log.info("msg sent confirmation = {}", confirm);
 
         } catch (Exception e) {
-            log.error("Failed to send dispatch update notification for order = {}...", orderEntity);
+            log.error("Failed to send dispatch update notification for order = {},\n\nError=> {}", orderEntity, e.getMessage());
         }
     }
 }
