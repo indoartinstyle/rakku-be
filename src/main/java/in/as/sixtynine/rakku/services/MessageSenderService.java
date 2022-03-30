@@ -44,6 +44,7 @@ public class MessageSenderService {
     }
 
     public String sendSms(String phoneNumber, String msg) {
+        phoneNumber = phoneNumber.length() == 10 ? ("91" + phoneNumber) : phoneNumber;
         log.info("sending {}, to {}", msg, phoneNumber);
         PhoneNumber to = new PhoneNumber(phoneNumber);
         PhoneNumber from = new PhoneNumber(FROM);
