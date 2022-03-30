@@ -48,6 +48,7 @@ public class MessageSenderService {
     @Retryable(value = Exception.class, maxAttempts = 4, backoff = @Backoff(delay = 100))
     public String sendSms(String phoneNumber, String msg) {
         phoneNumber = phoneNumber.length() == 10 ? ("91" + phoneNumber) : phoneNumber;
+        phoneNumber = phoneNumber.trim().startsWith("+") ? phoneNumber : ("+" + phoneNumber);
         log.info("sending {}, to {}", msg, phoneNumber);
         PhoneNumber to = new PhoneNumber(phoneNumber);
         PhoneNumber from = new PhoneNumber(FROM);
