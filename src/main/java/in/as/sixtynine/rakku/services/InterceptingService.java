@@ -8,6 +8,7 @@ import in.as.sixtynine.rakku.userservice.entity.Address;
 import in.as.sixtynine.rakku.userservice.entity.User;
 import in.as.sixtynine.rakku.userservice.service.UserManagementService;
 import in.as.sixtynine.rakku.userservice.utils.UserType;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
@@ -34,8 +35,13 @@ public class InterceptingService {
     private final OTPRepository otpRepository;
     private final MessageSenderService messageSenderService;
 
+    @Getter
     @Value("${MSG_TEMPLATE}")
     private String msgTemplate;
+
+    @Getter
+    @Value("${delivery.from.name}")
+    private String orgName;
 
     @Async("interceptThread")
     public void createUserFromOrder(OrderRequestDto requestDto) {
@@ -119,7 +125,7 @@ public class InterceptingService {
                 log.info("Not sending message, because dispatched not bu courier...");
                 return;
             }
-            String newMsg = "" + msgTemplate;
+            String newMsg = "From "+ getOrgName() + ", \n" + getMsgTemplate();
             messageSenderService.sendSms("" + orderEntity.getCustomerNumber(),
                     newMsg.replace("<COURIER>", orderEntity.getItemCourierPartner()).replace("<TACK_ID>", orderEntity.getItemCourierTrackID()));
 
