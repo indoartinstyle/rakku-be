@@ -44,9 +44,11 @@ public class MessageSenderService {
     }
 
     public String sendSms(String phoneNumber, String msg) {
+        log.info("sending {}, to {}", msg, phoneNumber);
         PhoneNumber to = new PhoneNumber(phoneNumber);
         PhoneNumber from = new PhoneNumber(FROM);
         Message message = Message.creator(to, from, msg).create();
+        log.info("Msg send status: {}", message.getStatus().name());
         return message.getSid();
     }
 

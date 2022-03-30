@@ -125,9 +125,10 @@ public class InterceptingService {
                 log.info("Not sending message, because dispatched not bu courier...");
                 return;
             }
-            String newMsg = "From "+ getOrgName() + ", \n" + getMsgTemplate();
-            messageSenderService.sendSms("" + orderEntity.getCustomerNumber(),
+            String newMsg = "From " + getOrgName() + ", \n" + getMsgTemplate();
+            final String confirm = messageSenderService.sendSms("" + orderEntity.getCustomerNumber(),
                     newMsg.replace("<COURIER>", orderEntity.getItemCourierPartner()).replace("<TACK_ID>", orderEntity.getItemCourierTrackID()));
+            log.info("msg sent confirmation = {}", confirm);
 
         } catch (Exception e) {
             log.error("Failed to send dispatch update notification for order = {}...", orderEntity);
