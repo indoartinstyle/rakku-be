@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -43,6 +45,7 @@ public class MessageSenderService {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
     }
 
+    @Retryable(value = Exception.class, maxAttempts = 4, backoff = @Backoff(delay = 100))
     public String sendSms(String phoneNumber, String msg) {
         phoneNumber = phoneNumber.length() == 10 ? ("91" + phoneNumber) : phoneNumber;
         log.info("sending {}, to {}", msg, phoneNumber);

@@ -6,6 +6,8 @@ import in.as.sixtynine.rakku.userservice.entity.User;
 import in.as.sixtynine.rakku.userservice.service.dbservice.UserDataService;
 import in.as.sixtynine.rakku.userservice.utils.ERole;
 import lombok.RequiredArgsConstructor;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -19,6 +21,7 @@ public class UserManagementService {
 
     private final UserDataService userDataService;
 
+    @Retryable(value = Exception.class, maxAttempts = 4, backoff = @Backoff(delay = 100))
     public User saveUser(User user, String totp) {
         user.setRoles(Sets.newHashSet(ERole.USER.getRoleName()));
         user.setCreatedTime(System.currentTimeMillis());

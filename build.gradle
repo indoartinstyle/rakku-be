@@ -73,6 +73,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'com.azure.spring:azure-spring-boot-starter-cosmos'
     implementation 'com.azure.spring:azure-spring-boot-starter-storage'
+    implementation 'org.springframework.retry:spring-retry:1.2.5.RELEASE'
+    implementation 'org.springframework:spring-aspects:5.2.8.RELEASE'
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
