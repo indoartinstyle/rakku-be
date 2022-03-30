@@ -32,7 +32,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final OrderMapper mapper;
-    private final UserRepository repository;
+    private final InterceptingService interceptingService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Value("${delivery.from.address}")
@@ -45,6 +45,8 @@ public class OrderService {
     private Long phoneno;
 
     public OrderEntity createOrder(OrderRequestDto requestDto, String takenBy) {
+        log.info("Creating Order - in {}", Thread.currentThread().getName());
+        interceptingService.createUserFromOrder(requestDto);
         final OrderEntity orderEntity = mapper.toEntity(requestDto);
         orderEntity.setCreatedTime(System.currentTimeMillis());
         orderEntity.setId(UUID.randomUUID().toString());
