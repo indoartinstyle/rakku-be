@@ -2,6 +2,8 @@ package in.as.sixtynine.rakku.services;
 
 import in.as.sixtynine.rakku.configs.BlobStorageConfig;
 import in.as.sixtynine.rakku.entities.Product;
+import in.as.sixtynine.rakku.userservice.entity.User;
+import in.as.sixtynine.rakku.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class StorageService {
     private final BlobStorageConfig config;
+    private final UserRepository userRepository;
 
     public void productImageUpload(Product product, byte[] file) throws IOException {
         try {
@@ -26,6 +29,17 @@ public class StorageService {
                 throw new RuntimeException("max no of image reached");
             }
             product.getImgUrl().add(config.upload(fileName, file));
+        } catch (IOException e) {
+            log.error("Error while uploading product image..\n Error ={}", e.getMessage());
+            throw e;
+        }
+    }
+
+    public void userAvatarUpdate(User user, byte[] file) throws IOException {
+        try {
+            final String fileName = user.getId() + ".jpg";
+            user.setAvatarUrl(config.upload(fileName, file));
+            userRepository.save(user);
         } catch (IOException e) {
             log.error("Error while uploading product image..\n Error ={}", e.getMessage());
             throw e;

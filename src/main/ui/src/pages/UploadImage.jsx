@@ -28,7 +28,7 @@ class UploadImage extends Component {
     let AUTH_TOKEN = 'Bearer ' + token;
     axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
     axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-    axios.post('/api/product/image/upload?FY=' + productID, formData, {
+    axios.post('/api/product/image/upload?productID=' + productID, formData, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
         'Authorization': AUTH_TOKEN,

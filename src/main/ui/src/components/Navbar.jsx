@@ -75,6 +75,9 @@ class Navbar extends Component {
           </div>
         </div>
         <span className="text-black-50" style={{'margin-right': '5px'}}>{userName}</span>
+        {
+          this.state.loggedInUser && this.state.loggedInUser.avatarUrl ? (<span className="text-black-50" style={{'margin-right': '5px'}}><img width="40px" height="40px" src={this.state.loggedInUser.avatarUrl} alt=""></img></span>) : null
+        }
       </nav>
     );
   }

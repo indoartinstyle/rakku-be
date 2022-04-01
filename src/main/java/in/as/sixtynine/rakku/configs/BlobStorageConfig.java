@@ -50,7 +50,7 @@ public class BlobStorageConfig {
     public String upload(String fileName, byte[] buf) throws IOException {
         InputStream dataStream = new ByteArrayInputStream(buf);
         final BlobClient blobClient = blobContainer.getBlobClient(fileName);
-        blobClient.upload(dataStream, buf.length);
+        blobClient.upload(dataStream, buf.length, true);
         return blobClient.getBlobUrl();
     }
 }

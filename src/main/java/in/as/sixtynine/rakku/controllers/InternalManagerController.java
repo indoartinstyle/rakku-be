@@ -8,6 +8,9 @@ import in.as.sixtynine.rakku.entities.OrderEntity;
 import in.as.sixtynine.rakku.entities.Product;
 import in.as.sixtynine.rakku.services.OrderService;
 import in.as.sixtynine.rakku.services.ProductService;
+import in.as.sixtynine.rakku.services.StorageService;
+import in.as.sixtynine.rakku.userservice.entity.User;
+import in.as.sixtynine.rakku.userservice.service.UserManagementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -35,6 +38,9 @@ public class InternalManagerController {
 
     private final OrderService orderService;
     private final ProductService productService;
+    private final StorageService storageService;
+    private final UserManagementService userManagementService;
+
 
     @CrossOrigin
     @PostMapping("/order")
@@ -84,13 +90,24 @@ public class InternalManagerController {
 
     @Secured({"ROLE_ADMIN"})
     @PostMapping(value = "/product/image/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Product> uploadPaytable(@RequestPart Optional<MultipartFile> file, @RequestParam(value = "FY", required = true) String productID) throws Exception {
+    public ResponseEntity<Product> uploadProductImage(@RequestPart Optional<MultipartFile> file, @RequestParam(value = "FY", required = true) String productID) throws Exception {
         final MultipartFile multipartFile = file.get();
         if (!multipartFile.getContentType().contains("image")) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         final Product product = productService.uploadProductImage(productID, multipartFile.getBytes());
         return new ResponseEntity<>(product, HttpStatus.CREATED);
+    }
+
+    @PostMapping(value = "/user/image/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<User> uploadUserAvatar(@RequestPart Optional<MultipartFile> file, Principal principal) throws Exception {
+        final MultipartFile multipartFile = file.get();
+        if (!multipartFile.getContentType().contains("image")) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        final User user = userManagementService.geLoggedInUser(principal);
+        storageService.userAvatarUpdate(user, multipartFile.getBytes());
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
     @CrossOrigin
