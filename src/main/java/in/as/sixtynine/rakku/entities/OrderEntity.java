@@ -5,6 +5,7 @@ import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import in.as.sixtynine.rakku.dtos.Item;
+import in.as.sixtynine.rakku.dtos.ReturnData;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -31,8 +32,12 @@ public class OrderEntity {
     private String customerAddress;
     private String customerFromSocial;
     private List<Item> items;
+    private List<ReturnData> returns;
     private double itemTotalGST;
     private double itemTotalCost;
+
+    private String oldItemCourierPartner;
+    private String oldItemCourierTrackID;
 
     private String itemCourierPartner;
     private String itemCourierTrackID;
