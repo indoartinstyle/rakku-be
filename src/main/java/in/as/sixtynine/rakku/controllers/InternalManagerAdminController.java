@@ -1,6 +1,5 @@
 package in.as.sixtynine.rakku.controllers;
 
-import in.as.sixtynine.rakku.dtos.DeliveryDetailsDto;
 import in.as.sixtynine.rakku.dtos.OrderDispatchBulkDto;
 import in.as.sixtynine.rakku.dtos.OrderRequestDto;
 import in.as.sixtynine.rakku.dtos.SalesDto;
@@ -8,9 +7,6 @@ import in.as.sixtynine.rakku.entities.OrderEntity;
 import in.as.sixtynine.rakku.entities.Product;
 import in.as.sixtynine.rakku.services.OrderService;
 import in.as.sixtynine.rakku.services.ProductService;
-import in.as.sixtynine.rakku.services.StorageService;
-import in.as.sixtynine.rakku.userservice.entity.User;
-import in.as.sixtynine.rakku.userservice.service.UserManagementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,12 +30,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
-public class InternalManagerController {
+public class InternalManagerAdminController {
 
     private final OrderService orderService;
     private final ProductService productService;
-    private final StorageService storageService;
-    private final UserManagementService userManagementService;
 
 
     @CrossOrigin
@@ -60,13 +54,6 @@ public class InternalManagerController {
     }
 
     @CrossOrigin
-    @GetMapping("/order/nondispatched")
-    public ResponseEntity<List<DeliveryDetailsDto>> allNonDispatchedOrder() throws URISyntaxException, NoSuchAlgorithmException {
-        final List<DeliveryDetailsDto> allNonDispatchedOrder = orderService.getAllNonDispatchedOrder();
-        return new ResponseEntity<>(allNonDispatchedOrder, HttpStatus.OK);
-    }
-
-    @CrossOrigin
     @PostMapping("/product")
     @Secured({"ROLE_ADMIN"})
     public ResponseEntity<Product> createProduct(@RequestBody @Valid Product product, Principal principal) throws URISyntaxException, NoSuchAlgorithmException {
@@ -82,12 +69,6 @@ public class InternalManagerController {
         return new ResponseEntity<>(newItem, HttpStatus.CREATED);
     }
 
-    @CrossOrigin
-    @GetMapping("/product")
-    public ResponseEntity<List<Product>> getAllProducts() throws URISyntaxException, NoSuchAlgorithmException {
-        return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
-    }
-
     @Secured({"ROLE_ADMIN"})
     @PostMapping(value = "/product/image/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Product> uploadProductImage(@RequestPart Optional<MultipartFile> file, @RequestParam(value = "FY", required = true) String productID) throws Exception {
@@ -99,25 +80,9 @@ public class InternalManagerController {
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 
-    @PostMapping(value = "/user/image/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<User> uploadUserAvatar(@RequestPart Optional<MultipartFile> file, Principal principal) throws Exception {
-        final MultipartFile multipartFile = file.get();
-        if (!multipartFile.getContentType().contains("image")) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        final User user = userManagementService.geLoggedInUser(principal);
-        storageService.userAvatarUpdate(user, multipartFile.getBytes());
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
-    }
-
-    @CrossOrigin
-    @GetMapping("/product/all")
-    public ResponseEntity<List<Product>> getAllProductsV2() {
-        return new ResponseEntity<>(productService.getAllProductsV2(), HttpStatus.OK);
-    }
-
     @CrossOrigin
     @GetMapping("/sales")
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity<SalesDto> getAllSales(@RequestParam String year, @RequestParam String month, @RequestParam String day, @RequestParam Boolean isItemReq) throws URISyntaxException, NoSuchAlgorithmException, ParseException {
         SalesDto res = orderService.getAllSales(year, month, day, isItemReq);
         return new ResponseEntity<>(res, HttpStatus.OK);

@@ -1,5 +1,6 @@
 package in.as.sixtynine.rakku.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.AtomicDouble;
@@ -9,11 +10,14 @@ import in.as.sixtynine.rakku.entities.Product;
 import in.as.sixtynine.rakku.mappers.OrderMapper;
 import in.as.sixtynine.rakku.repositories.OrderRepository;
 import in.as.sixtynine.rakku.repositories.ProductRepository;
-import in.as.sixtynine.rakku.userservice.repository.UserRepository;
+import in.as.sixtynine.rakku.userservice.entity.User;
+import in.as.sixtynine.rakku.userservice.utils.ERole;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,6 +37,8 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final OrderMapper mapper;
     private final InterceptingService interceptingService;
+    private final ReturnService returnService;
+    private final OrderProductTransaction orderProductTransaction;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Value("${delivery.from.address}")
@@ -51,16 +57,29 @@ public class OrderService {
         orderEntity.setCreatedTime(System.currentTimeMillis());
         orderEntity.setId(UUID.randomUUID().toString());
         orderEntity.setOrderTakenBy(takenBy);
-        fillTotalCost(orderEntity);
-        final Collection<Product> products = validateStock(orderEntity);
-        final OrderEntity save = orderRepository.save(orderEntity);
-        productRepository.saveAll(products);
+        final OrderEntity save = doCreateOrder(orderEntity);
         return save;
     }
 
-    private Collection<Product> validateStock(OrderEntity orderEntity) {
+    private OrderEntity doCreateOrder(OrderEntity orderEntity) {
+        fillTotalCost(orderEntity);
+        final Collection<Product> products = validateStock(orderEntity.getItems());
+        orderEntity.setStatus("PENDING");
+        OrderEntity save = orderRepository.save(orderEntity);
+        try {
+            orderEntity.setStatus("CONFIRM");
+            save = orderProductTransaction.updateOrderProduct(save, new ArrayList<>(products));
+            return save;
+        } catch (JsonProcessingException e) {
+            log.error("Error = {} ", e.getMessage());
+            throw new RuntimeException("" + e.getMessage());
+        }
+
+    }
+
+    private Collection<Product> validateStock(List<Item> acquiredItems) {
         final Map<String, Item> items = new HashMap<>();
-        orderEntity.getItems().forEach(item -> {
+        acquiredItems.forEach(item -> {
             items.put(item.getItemID(), item);
         });
         final Map<String, Product> products = new HashMap<>();
@@ -183,5 +202,41 @@ public class OrderService {
             });
         }
         return res;
+    }
+
+    @Transactional
+    public OrderEntity returnProducts(User loggedUser, String orderid, ReturnData returnDto) throws JsonProcessingException {
+        final Optional<OrderEntity> byId = orderRepository.findById(orderid);
+        if (byId.isEmpty()) {
+            throw new RuntimeException("No order found for ID...");
+        }
+        if (isOrderBelongsToLoggedUsers(loggedUser, byId.get()) || isAdmin(loggedUser)) {
+            final OrderEntity orderEntity = returnService.performReturnFlow(byId.get(), returnDto);
+            fillTotalCost(orderEntity);
+            orderEntity.setOldItemCourierPartner(orderEntity.getItemCourierPartner());
+            orderEntity.setOldItemCourierTrackID(orderEntity.getItemCourierTrackID());
+            orderEntity.setItemCourierTrackID(null);
+            orderEntity.setItemCourierPartner(null);
+
+            if (!CollectionUtils.isEmpty(returnDto.getOnExchange())) {
+                final OrderEntity orderEntity1 = returnService.returnProductTransactionOperation(orderEntity, new ArrayList<>(validateStock(returnDto.getOnExchange())));
+                log.info("Order return successful... {}", orderEntity1);
+                return orderEntity1;
+            }
+            orderRepository.save(orderEntity);
+            return orderEntity;
+        } else {
+            throw new RuntimeException("Permission denied ...");
+        }
+    }
+
+    private boolean isAdmin(User loggedUser) {
+        return loggedUser.getRoles().contains(ERole.ADMIN.getRoleName());
+    }
+
+    private boolean isOrderBelongsToLoggedUsers(User loggedUser, OrderEntity orderEntity) {
+        final String customerNumber = new StringBuilder("" + orderEntity.getCustomerNumber()).reverse().toString();
+        final String loggedUserNumber = new StringBuilder("" + loggedUser.getPhoneNumber()).reverse().toString();
+        return customerNumber.substring(0, 10).equalsIgnoreCase(loggedUserNumber.substring(0, 10));
     }
 }

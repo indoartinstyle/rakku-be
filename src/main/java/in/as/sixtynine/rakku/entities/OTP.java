@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 
-import static in.as.sixtynine.rakku.constants.DBConstants.RBOX;
+import static in.as.sixtynine.rakku.constants.DBConstants.CORE_CONTAINER;
 
 
 @Data
 @NoArgsConstructor
-@Container(containerName = RBOX)
+@Container(containerName = CORE_CONTAINER)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OTP {
     @Id
