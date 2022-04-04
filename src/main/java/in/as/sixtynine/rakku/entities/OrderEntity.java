@@ -13,20 +13,23 @@ import org.springframework.data.annotation.Version;
 
 import java.util.List;
 
-import static in.as.sixtynine.rakku.constants.DBConstants.RBOX;
+import static in.as.sixtynine.rakku.constants.DBConstants.CORE_CONTAINER;
 
 
 @Data
 @NoArgsConstructor
-@Container(containerName = RBOX)
+@Container(containerName = CORE_CONTAINER)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderEntity {
     @Id
     private String id;
 
     @PartitionKey
+    private final String key = "po";
+
     private final String type = OrderEntity.class.getSimpleName();
 
+    private String status;
     private String customerName;
     private long customerNumber;
     private String customerAddress;

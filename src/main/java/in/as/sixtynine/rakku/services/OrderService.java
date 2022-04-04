@@ -1,5 +1,6 @@
 package in.as.sixtynine.rakku.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.AtomicDouble;
@@ -37,6 +38,7 @@ public class OrderService {
     private final OrderMapper mapper;
     private final InterceptingService interceptingService;
     private final ReturnService returnService;
+    private final OrderProductTransaction orderProductTransaction;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Value("${delivery.from.address}")
@@ -62,9 +64,17 @@ public class OrderService {
     private OrderEntity doCreateOrder(OrderEntity orderEntity) {
         fillTotalCost(orderEntity);
         final Collection<Product> products = validateStock(orderEntity.getItems());
-        final OrderEntity save = orderRepository.save(orderEntity);
-        productRepository.saveAll(products);
-        return save;
+        orderEntity.setStatus("PENDING");
+        OrderEntity save = orderRepository.save(orderEntity);
+        try {
+            orderEntity.setStatus("CONFIRM");
+            save = orderProductTransaction.updateOrderProduct(save, new ArrayList<>(products));
+            return save;
+        } catch (JsonProcessingException e) {
+            log.error("Error = {} ", e.getMessage());
+            throw new RuntimeException("" + e.getMessage());
+        }
+
     }
 
     private Collection<Product> validateStock(List<Item> acquiredItems) {
@@ -194,9 +204,8 @@ public class OrderService {
         return res;
     }
 
-    // Buggy.... need to implement transaction....
     @Transactional
-    public OrderEntity returnProducts(User loggedUser, String orderid, ReturnData returnDto) {
+    public OrderEntity returnProducts(User loggedUser, String orderid, ReturnData returnDto) throws JsonProcessingException {
         final Optional<OrderEntity> byId = orderRepository.findById(orderid);
         if (byId.isEmpty()) {
             throw new RuntimeException("No order found for ID...");
@@ -208,10 +217,13 @@ public class OrderService {
             orderEntity.setOldItemCourierTrackID(orderEntity.getItemCourierTrackID());
             orderEntity.setItemCourierTrackID(null);
             orderEntity.setItemCourierPartner(null);
-            orderRepository.save(orderEntity);
+
             if (!CollectionUtils.isEmpty(returnDto.getOnExchange())) {
-                productRepository.saveAll(validateStock(returnDto.getOnExchange()));
+                final OrderEntity orderEntity1 = returnService.returnProductTransactionOperation(orderEntity, new ArrayList<>(validateStock(returnDto.getOnExchange())));
+                log.info("Order return successful... {}", orderEntity1);
+                return orderEntity1;
             }
+            orderRepository.save(orderEntity);
             return orderEntity;
         } else {
             throw new RuntimeException("Permission denied ...");

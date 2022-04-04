@@ -1,5 +1,6 @@
 package in.as.sixtynine.rakku.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import in.as.sixtynine.rakku.dtos.DeliveryDetailsDto;
 import in.as.sixtynine.rakku.dtos.ReturnData;
 import in.as.sixtynine.rakku.entities.OrderEntity;
@@ -69,9 +70,9 @@ public class IAISController {
 
     @CrossOrigin
     @PostMapping("/product/return")
-    public ResponseEntity<OrderEntity> returnProducts(@RequestParam String orderid, @RequestBody ReturnData returnDto, Principal principal) {
+    public ResponseEntity<OrderEntity> returnProducts(@RequestParam String orderid, @RequestBody ReturnData returnDto, Principal principal) throws JsonProcessingException {
         final User user = userManagementService.geLoggedInUser(principal);
-        return new ResponseEntity<OrderEntity>(orderService.returnProducts(user, orderid, returnDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(orderService.returnProducts(user, orderid, returnDto), HttpStatus.CREATED);
     }
 
 }

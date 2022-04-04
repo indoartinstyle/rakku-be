@@ -11,25 +11,27 @@ import org.springframework.data.annotation.Version;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import static in.as.sixtynine.rakku.constants.DBConstants.RBOX;
+import static in.as.sixtynine.rakku.constants.DBConstants.CORE_CONTAINER;
 
 
 @Data
 @NoArgsConstructor
-@Container(containerName = RBOX)
+@Container(containerName = CORE_CONTAINER)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Product {
     @Id
     private String id;
 
     @PartitionKey
+    private final String key = "po";
+
     private final String type = Product.class.getSimpleName();
 
-    private List<String> imgUrl =new ArrayList<>();
+    private List<String> imgUrl = new ArrayList<>();
+
     @NotEmpty
     private String itemModelName;
     @NotEmpty

@@ -1,14 +1,18 @@
 package in.as.sixtynine.rakku.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import in.as.sixtynine.rakku.dtos.Item;
 import in.as.sixtynine.rakku.dtos.ReturnData;
 import in.as.sixtynine.rakku.entities.OrderEntity;
+import in.as.sixtynine.rakku.entities.Product;
 import in.as.sixtynine.rakku.enums.EReturnReason;
 import in.as.sixtynine.rakku.enums.EReturnResolveType;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 /**
@@ -17,7 +21,10 @@ import java.util.Optional;
 
 @Log4j2
 @Service
+@RequiredArgsConstructor
 public class ReturnService {
+
+    private final OrderProductTransaction orderProductTransaction;
 
     public OrderEntity performReturnFlow(OrderEntity orderEntity, ReturnData returnDto) {
         log.info("executing return flow for order = {}, with return details={}", orderEntity.getId(), returnDto);
@@ -51,5 +58,9 @@ public class ReturnService {
                 throw new RuntimeException("If resolve type is DIFFERENT_EXCHANGE then exchange list is required...");
             }
         }
+    }
+
+    public OrderEntity returnProductTransactionOperation(OrderEntity orderEntity, ArrayList<Product> products) throws JsonProcessingException {
+        return orderProductTransaction.updateOrderProduct(orderEntity, products);
     }
 }

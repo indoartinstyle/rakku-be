@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DBConstants {
 
-    public static final String RBOX = "rbox";
+    public static final String CORE_CONTAINER = "pcore";
 
 }
