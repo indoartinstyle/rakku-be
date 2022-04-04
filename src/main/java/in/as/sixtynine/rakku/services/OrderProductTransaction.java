@@ -18,11 +18,12 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static in.as.sixtynine.rakku.constants.DBConstants.CORE_CONTAINER;
 
@@ -37,6 +38,8 @@ import static in.as.sixtynine.rakku.constants.DBConstants.CORE_CONTAINER;
 public class OrderProductTransaction {
 
     protected static final String TRANSACTION_STORED_PROC = "updateOrderAndStock";
+    protected static final String STORE_PROC_FILE_PATH = "/storedproc/rbox.cosmosdb.storeproc.update.order.js";
+
     private final DocumentDBConfig documentDBConfig;
     private final CosmosClientBuilder cosmosClientBuilder;
 
@@ -51,8 +54,7 @@ public class OrderProductTransaction {
     }
 
     private void loadTransactionStoredProc() throws IOException {
-        File file = getResourceFile("storedproc/rbox.cosmosdb.storeproc.update.order.js");
-        String sprocBody = new String(Files.readAllBytes(file.toPath()));
+        String sprocBody = getResourceFile(STORE_PROC_FILE_PATH);
         log.info("Stored proc = {}", sprocBody);
         CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties(TRANSACTION_STORED_PROC, sprocBody);
         try {
@@ -71,18 +73,11 @@ public class OrderProductTransaction {
         }
     }
 
-    private File getResourceFile(final String fileName) {
-        URL url = this.getClass()
-                .getClassLoader()
-                .getResource(fileName);
-
-        if (url == null) {
-            final String s = fileName + " is not found 1";
-            log.error(s);
-            throw new IllegalArgumentException(s);
-        }
-        File file = new File(url.getFile());
-        return file;
+    private String getResourceFile(final String fileName) {
+        return new BufferedReader(
+                new InputStreamReader(this.getClass().getResourceAsStream(fileName), StandardCharsets.UTF_8))
+                .lines()
+                .collect(Collectors.joining("\n"));
     }
 
 
