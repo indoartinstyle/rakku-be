@@ -67,7 +67,7 @@ public class OrderService {
         orderEntity.setStatus("PENDING");
         OrderEntity save = orderRepository.save(orderEntity);
         try {
-            orderEntity.setStatus("CONFIRM");
+            save.setStatus("CONFIRM");
             save = orderProductTransaction.updateOrderProduct(save, new ArrayList<>(products));
             return save;
         } catch (JsonProcessingException e) {
